@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MainPage</title>
+    <link rel="stylesheet" href="/assets/css/main.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/css/home.css"/>
+</head>
+<body onload="faqAboutRequest()">
+    <div id="wellcome" class="d-flex justify-content-center align-items-center">
+        <h1 id="welcomeTo">Welcome to IDKChat</h1>
+    </div>
+
+    <div id="container-for-faqAbout" >
+
+    </div>
+
+    <script>
+        function faqAboutRequest(){
+            var queryString = window.location.search;
+            var qS1 = queryString.slice(1);
+            const urlParams = new URLSearchParams(qS1);
+            if(urlParams.size == 1){
+                var welcomeTo = document.getElementById("welcomeTo");
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState == 4 && xhr.status == 200){
+                        document.getElementById("container-for-faqAbout").innerHTML = xhr.responseText;
+                    }
+                };
+                if(urlParams.has("about")){
+                    xhr.open("GET", "/pages/halfPages/about.html");
+                    welcomeTo.innerHTML += " About Us page";
+                }
+
+                else if(urlParams.has("faq")){
+                    xhr.open("GET", "/pages/halfPages/faq.html");
+                    welcomeTo.innerHTML += " FAQs";
+                }
+                xhr.send();
+            }
+        }
+    </script>
+</body>
+</html>
