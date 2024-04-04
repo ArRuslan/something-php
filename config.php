@@ -1,6 +1,6 @@
 <?php
 
-$db_host = $_ENV["DATABASE_HOST"];
-$db_user = "idkchatphp";
-$db_password = $_ENV["DATABASE_PASSWORD"];
-$db_database = "idkchatphp";
+$GLOBALS["db_host"] = $_ENV["DATABASE_HOST"];
+$GLOBALS["db_user"] = "idkchatphp";
+$GLOBALS["db_password"] = $_ENV["DATABASE_PASSWORD"];
+$GLOBALS["db_database"] = "idkchatphp";

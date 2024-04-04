@@ -34,7 +34,7 @@ class DialogsWebpage implements BaseWebpage {
 
     public function getBody(): string {
         ob_start();
-        include("pages/dialogs/body.php");
+        include_once("pages/dialogs/body.php");
         return ob_get_clean();
     }
 

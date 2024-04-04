@@ -31,6 +31,8 @@ switch ($path) {
         break;
 }
 
+$body = $page->getBody();
+
 ?>
 
 <html lang="en">
@@ -80,7 +82,7 @@ switch ($path) {
         }
     </script>
 <?php
-echo $page->getBody();
+echo $body;
 echo $page->getFooter();
 ?>
 </body>

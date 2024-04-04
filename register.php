@@ -7,10 +7,8 @@ if(!isset($_POST["login"]) || !isset($_POST["password"])) {
 include "config.php";
 include "Database.php";
 
-global $db_database, $db_host, $db_user, $db_password;
-
 // TODO: handle errors
-$db = new Database($db_host, $db_user, $db_password, $db_database);
+$db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 $db->addUser($_POST["login"], $_POST["password"]);
 $db->close();
 

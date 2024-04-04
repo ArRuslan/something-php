@@ -4,12 +4,11 @@ if (!isset($_SESSION["login"])) {
     die;
 }
 
-include "config.php";
 include "Database.php";
 
-global $db_database, $db_host, $db_user, $db_password;
+include "config.php";
 
-$db = new Database($db_host, $db_user, $db_password, $db_database);
+$db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 
 ?>
 
