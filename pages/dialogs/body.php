@@ -3,6 +3,11 @@ if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
 }
+
+include "Database.php";
+
+$db = new Database("127.0.0.1", "idkchatphp", "123456789", "idkchatphp");
+
 ?>
 
 <link rel="stylesheet" href="/assets/css/dialogs.css">
@@ -79,11 +84,11 @@ if (!isset($_SESSION["login"])) {
                 <hr class="w-100 my-1">
                 <div class="d-flex flex-grow-1" style="height: 0">
                     <ul class="d-block overflow-y-scroll list-unstyled w-100" id="messagesContainer">
-                        <?php for($i = 0 ; $i < count($_SESSION["messages"]) ; $i++) { ?>
+                        <?php foreach($db->getUserMessages($_SESSION["login"]) as $message) { ?>
                             <li class="message my-message">
                                 <div>
-                                    <span class="message-time">[<?php echo $_SESSION["messages"][$i]["time"] ?>]</span>
-                                    <span class="message-text"><?php echo $_SESSION["messages"][$i]["text"] ?></span>
+                                    <span class="message-time">[<?php echo $message["time"] ?>]</span>
+                                    <span class="message-text"><?php echo $message["text"] ?></span>
                                 </div>
                             </li>
                         <?php } ?>

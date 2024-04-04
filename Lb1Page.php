@@ -7,18 +7,7 @@ class Lb1Page implements BaseWebpage {
     private String $title = "Products";
     private String $header = "<h1>Header</h1>";
     private String $body = "<div class='body'>Body</div>";
-    private String $footer;
-
-    public function __construct(?string $title = null, ?string $header = null, ?string $body = null, ?string $footer = null) {
-        global $FOOTER;
-        if($title != null) $this->title = $title;
-        if($header != null) $this->header = $header;
-        if($body != null) $this->body = $body;
-        if($footer != null)
-            $this->footer = $footer;
-        else
-            $this->footer = $FOOTER;
-    }
+    private String $footer = "";
 
     public function getTitle(): string {
         return $this->title;
