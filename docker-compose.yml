@@ -12,6 +12,7 @@ services:
       - internal
     restart: unless-stopped
     environment:
+      - DATABASE_HOST=mariadb
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
   php:
     build:
@@ -22,6 +23,7 @@ services:
       - internal
     restart: unless-stopped
     environment:
+      - DATABASE_HOST=mariadb
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
   mariadb:
     image: mariadb:10.6
