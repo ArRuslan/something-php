@@ -4,9 +4,13 @@ if(!isset($_POST["login"]) || !isset($_POST["password"])) {
     die;
 }
 
+include "config.php";
 include "Database.php";
 
-$db = new Database("127.0.0.1", "idkchatphp", "123456789", "idkchatphp");
+global $db_database, $db_host, $db_user, $db_password;
+
+// TODO: handle errors
+$db = new Database($db_host, $db_user, $db_password, $db_database);
 $db->addUser($_POST["login"], $_POST["password"]);
 $db->close();
 

@@ -10,6 +10,7 @@ services:
       - "127.0.0.1:25010:80"
     networks:
       - internal
+    restart: unless-stopped
   php:
     build:
       context: .
@@ -17,7 +18,23 @@ services:
     pull_policy: build
     networks:
       - internal
+    restart: unless-stopped
+  mariadb:
+    image: mariadb:10.6
+    networks:
+      - internal
+    volumes: ['mariadb_data:/var/lib/mysql']
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MARIADB_DATABASE=idkchatphp
+      - MARIADB_USER=idkchatphp
+      - MARIADB_PASSWORD=${DATABASE_PASSWORD}
+    restart: unless-stopped
 
 networks:
   internal:
     driver: bridge
+
+volumes:
+  mariadb_data:
+    driver: local

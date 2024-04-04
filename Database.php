@@ -1,10 +1,5 @@
 <?php
 
-$host = "127.0.0.1";
-$user = "idkchatphp";
-$password = "123456789";
-$database = "idkchatphp";
-
 class Database {
     private mysqli $connection;
 
