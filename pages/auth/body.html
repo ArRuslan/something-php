@@ -3,7 +3,7 @@
         <div class="text-center card-header h3" id="authTitle">Login</div>
         <div class="card-body">
             <div id="authAlertContainer"></div>
-            <form id="loginForm" class="d-flex flex-column gap-3" action="login.php" method="POST"> <!-- onsubmit="login(); return false;"-->
+            <form id="loginForm" class="d-flex flex-column gap-3" action="/login.php" method="POST"> <!-- onsubmit="login(); return false;"-->
                 <div class="form-group">
                     <label for="login_loginInput">Login</label>
                     <input name="login" type="text" class="form-control" id="login_loginInput" placeholder="Enter login" required minlength="5" maxlength="32">
@@ -18,21 +18,21 @@
                 </div>
             </form>
 
-            <form id="signupForm" class="d-none flex-column gap-3" onsubmit="signup(); return false;">
+            <form id="signupForm" class="d-none flex-column gap-3" action="/register.php" method="POST"> <!-- onsubmit="signup(); return false;">-->
                 <div class="form-group">
                     <label for="signup_loginInput">Login</label>
-                    <input type="text" class="form-control" id="signup_loginInput" placeholder="Enter login" required minlength="5" maxlength="32">
+                    <input name="login" type="text" class="form-control" id="signup_loginInput" placeholder="Enter login" required minlength="5" maxlength="32">
                 </div>
                 <div class="form-group">
                     <label for="signup_passwordInput">Password</label>
-                    <input type="password" class="form-control" id="signup_passwordInput" placeholder="Password" required>
+                    <input name="password" type="password" class="form-control" id="signup_passwordInput" placeholder="Password" required>
                 </div>
                 <div class="form-group">
                     <label for="signup_passwordRepeatInput">Repeat password</label>
                     <input type="password" class="form-control" id="signup_passwordRepeatInput" placeholder="Password" required>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-primary" onclick="signup();">Sign up</button>
+                    <button type="submit" class="btn btn-primary" onclick="signup();">Sign up</button>
                     <a href="#" onclick="showForm('login');">Back to login</a>
                 </div>
             </form>

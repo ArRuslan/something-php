@@ -15,7 +15,7 @@ switch ($path) {
         break;
     case "/dialogs":
         require "DialogsWebpage.php";
-        $page = new DialogsWebpage("Dialogs", "", "", "");
+        $page = new DialogsWebpage("Dialogs", "", "", " ");
         break;
     case "/lb1":
         require "Lb1Page.php";

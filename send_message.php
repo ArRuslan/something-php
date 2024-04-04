@@ -7,9 +7,10 @@ if(!isset($_POST["text"]) || !isset($_SESSION["login"])) {
     die;
 }
 
-array_push($_SESSION["messages"], array(
-    "text" => $_POST["text"],
-    "time" => date("d.m.Y H:i:s"),
-));
+include "Database.php";
+
+$db = new Database("127.0.0.1", "idkchatphp", "123456789", "idkchatphp");
+$db->addMessage($_SESSION["login"], $_POST["text"]);
+$db->close();
 
 header("Location: /dialogs");
