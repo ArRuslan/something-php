@@ -17,14 +17,6 @@ switch ($path) {
         require "DialogsWebpage.php";
         $page = new DialogsWebpage("Dialogs");
         break;
-    case "/lb1":
-        require "Lb1Page.php";
-        $page = new Lb1Page();
-        break;
-    case "/lb1-cart":
-        require "Lb1CartPage.php";
-        $page = new Lb1CartPage();
-        break;
     default:
         require "NotFoundWebpage.php";
         $page = new NotFoundWebpage();
