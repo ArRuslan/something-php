@@ -39,11 +39,10 @@ class HomeWebpage implements BaseWebpage {
     }
 
     public function getBody(): string {
-        return $this->body;
+        return file_get_contents("pages/index/body.html");
     }
 
     public function setBody(string $body): HomeWebpage {
-        $this->body = $body;
         return $this;
     }
 

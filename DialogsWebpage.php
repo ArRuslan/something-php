@@ -39,11 +39,12 @@ class DialogsWebpage implements BaseWebpage {
     }
 
     public function getBody(): string {
-        return $this->body;
+        ob_start();
+        include("pages/dialogs/body.php");
+        return ob_get_clean();
     }
 
     public function setBody(string $body): DialogsWebpage {
-        $this->body = $body;
         return $this;
     }
 

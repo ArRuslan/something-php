@@ -2,9 +2,9 @@
 require "BaseWebpage.php";
 require "constants.php";
 
-class AuthWebpage implements BaseWebpage {
+class Lb1Page implements BaseWebpage {
 
-    private String $title = "Login";
+    private String $title = "Products";
     private String $header = "<h1>Header</h1>";
     private String $body = "<div class='body'>Body</div>";
     private String $footer;
@@ -24,7 +24,7 @@ class AuthWebpage implements BaseWebpage {
         return $this->title;
     }
 
-    public function setTitle(string $title): AuthWebpage {
+    public function setTitle(string $title): Lb1Page {
         $this->title = $title;
         return $this;
     }
@@ -33,16 +33,18 @@ class AuthWebpage implements BaseWebpage {
         return $this->header;
     }
 
-    public function setHeader(string $header): AuthWebpage {
+    public function setHeader(string $header): Lb1Page {
         $this->header = $header;
         return $this;
     }
 
     public function getBody(): string {
-        return file_get_contents("pages/auth/body.html");
+        ob_start();
+        include("pages/lb1-products/body.php");
+        return ob_get_clean();
     }
 
-    public function setBody(string $body): AuthWebpage {
+    public function setBody(string $body): Lb1Page {
         return $this;
     }
 
@@ -50,7 +52,7 @@ class AuthWebpage implements BaseWebpage {
         return $this->footer;
     }
 
-    public function setFooter(string $footer): AuthWebpage {
+    public function setFooter(string $footer): Lb1Page {
         $this->footer = $footer;
         return $this;
     }

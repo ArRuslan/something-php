@@ -8,21 +8,22 @@ switch ($path) {
     case "/index":
         require "HomeWebpage.php";
         $page = new HomeWebpage();
-        $page->setBody(file_get_contents("pages/index/body.html"));
         break;
     case "/auth":
         require "AuthWebpage.php";
         $page = new AuthWebpage();
-        $page->setBody(file_get_contents("pages/auth/body.html"));
         break;
     case "/dialogs":
         require "DialogsWebpage.php";
-        $page = new DialogsWebpage();
-        ob_start();
-        include("pages/dialogs/body.php");
-        $page->setBody(ob_get_clean());
-        $page->setHeader("");
-        $page->setFooter("");
+        $page = new DialogsWebpage("Dialogs", "", "", "");
+        break;
+    case "/lb1":
+        require "Lb1Page.php";
+        $page = new Lb1Page(null, "");
+        break;
+    case "/lb1-cart":
+        require "Lb1CartPage.php";
+        $page = new Lb1CartPage(null, "", null, "");
         break;
     default:
         require "NotFoundWebpage.php";
