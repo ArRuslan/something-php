@@ -11,6 +11,8 @@ services:
     networks:
       - internal
     restart: unless-stopped
+    environment:
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
   php:
     build:
       context: .
@@ -19,6 +21,8 @@ services:
     networks:
       - internal
     restart: unless-stopped
+    environment:
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
   mariadb:
     image: mariadb:10.6
     networks:
