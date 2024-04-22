@@ -17,14 +17,6 @@ switch ($path) {
         require "DialogsWebpage.php";
         $page = new DialogsWebpage("Dialogs");
         break;
-    case "/admin":
-        require "AdminWebpage.php";
-        $page = new AdminWebpage("Admin features");
-        break;
-    case "/delete_user":
-        require "subpage-classes/AdminDeleteUserWebpage.php";
-        $page = new AdminDeleteUserWebpage("Delete user");
-        break;
     default:
         require "NotFoundWebpage.php";
         $page = new NotFoundWebpage();
@@ -56,7 +48,6 @@ $body = $page->getBody();
             <li><button class="bdel"><a href="/pages/dialogs/body.php" class="nav-link px-2 text-white">Dialogs</a></button></li>
             <li><button class="bdel" onclick="loadContent('faq')"><a href="#" class="nav-link px-2 text-white">FAQs</a></button></li>
             <li><button class="bdel" onclick="loadContent('about')"><a href="#" class="nav-link px-2 text-white">About</a></button></li>
-            <li><button class="bdel"><a href="/admin" class="nav-link px-2 text-white">Admin</a></button></li>
             </ul>
             <div class="text-end">
             <a href="/login.php">
