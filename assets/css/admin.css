@@ -1,0 +1,6 @@
+.container-for-features{
+    min-width: 400px;
+    max-width: 600px;
+    text-align: center;
+    margin: auto;
+}

@@ -17,6 +17,18 @@ switch ($path) {
         require "DialogsWebpage.php";
         $page = new DialogsWebpage("Dialogs");
         break;
+    case "/admin":
+        require "AdminWebpage.php";
+        $page = new AdminWebpage("Admin features");
+        break;
+    case "/delete_user":
+        require "subpage-classes/AdminDeleteUserWebpage.php";
+        $page = new AdminDeleteUserWebpage("Delete user");
+        break;
+    case "/delete_user/get-users":
+        require "pages/adminPages/php-scripts/delete-user.php";
+        require "subpage-classes/AdminDeleteUserWebpage.php";
+
     default:
         require "NotFoundWebpage.php";
         $page = new NotFoundWebpage();
