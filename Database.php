@@ -39,15 +39,21 @@ class Database {
             echo $exc->getMessage();
             return false;
         }
+        //delete user messages
+        $queryToDeleteUsersMessages = "DELETE FROM `messages` WHERE `user_id` LIKE ?";
+        $stmt = $this->connection->prepare($queryToDeleteUsersMessages);
+        $stmt->bind_param("s",$id);
+        $stmt->execute();
 
-        $query = "DELETE FROM `users` WHERE `id` == ?";
-        $stmt = $this->connection->prepare($query);
+        //delete user
+        $queryToDeleteUser = "DELETE FROM `users` WHERE `id` LIKE ?";
+        $stmt = $this->connection->prepare($queryToDeleteUser);
         $stmt->bind_param("s",$id);
         $stmt->execute();
         return true;
     }
 
-    public function getAllUsers() : array
+    public function getAllUsers() : array | null
     {
         $userArray = mysqli_query($this->connection, "SELECT `login` FROM `users`");
         if ($userArray -> num_rows == 0)

@@ -25,10 +25,6 @@ switch ($path) {
         require "subpage-classes/AdminDeleteUserWebpage.php";
         $page = new AdminDeleteUserWebpage("Delete user");
         break;
-    case "/delete_user/get-users":
-        require "pages/adminPages/php-scripts/delete-user.php";
-        require "subpage-classes/AdminDeleteUserWebpage.php";
-
     default:
         require "NotFoundWebpage.php";
         $page = new NotFoundWebpage();
@@ -60,6 +56,7 @@ $body = $page->getBody();
             <li><button class="bdel"><a href="/pages/dialogs/body.php" class="nav-link px-2 text-white">Dialogs</a></button></li>
             <li><button class="bdel" onclick="loadContent('faq')"><a href="#" class="nav-link px-2 text-white">FAQs</a></button></li>
             <li><button class="bdel" onclick="loadContent('about')"><a href="#" class="nav-link px-2 text-white">About</a></button></li>
+            <li><button class="bdel"><a href="/admin" class="nav-link px-2 text-white">Admin</a></button></li>
             </ul>
             <div class="text-end">
             <a href="/login.php">

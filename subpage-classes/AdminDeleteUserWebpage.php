@@ -5,6 +5,8 @@ include "Database.php";
 
 include "config.php";
 
+
+
 class AdminDeleteUserWebpage extends AdminWebpage
 {
     private String $title = "Delete user";
@@ -65,6 +67,10 @@ class AdminDeleteUserWebpage extends AdminWebpage
         $dom->loadHTML($document);
         $tableBody = $dom->getElementById("table-body");
         $userArray = $this->db->getAllUsers();
+        if($userArray == null)
+        {
+            return $dom;
+        }
         $userArrayLength = count($userArray);
         for($index = 0; $index < $userArrayLength; $index++)
         {
