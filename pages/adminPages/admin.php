@@ -3,8 +3,6 @@ if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
 }
-
-
 ?>
 <!DOCTYPE html>
 <html>
