@@ -45,13 +45,12 @@ class Database {
     }
 
     public function getAllUsers(): array|null {
-        $userArray = mysqli_query($this->connection, "SELECT `login` FROM `users`");
-        if ($userArray->num_rows == 0) {
+        $userQuery = mysqli_query($this->connection, "SELECT `login` FROM `users`");
+        if ($userQuery->num_rows == 0) {
             return null;
         }
 
-        $fetchedAssocArray = mysqli_fetch_all($userArray);
-        return $fetchedAssocArray;
+        return mysqli_fetch_all($userQuery);
     }
 
     public function addUser(String $login, String $password): void {
