@@ -1,25 +1,26 @@
 <?php
 
-$TABLES = [
-    "CREATE TABLE IF NOT EXISTS `users` (
-        `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-        `login` VARCHAR(128) UNIQUE,
-        `password` VARCHAR(128)
-    );",
-    "CREATE TABLE IF NOT EXISTS `messages` (
-        `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-        `user_id` BIGINT NOT NULL,
-        `text` LONGTEXT,
-        `time` INT NOT NULL,
-        FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
-    );",
-];
+$TABLES;
 
 class Database {
     private PDO $pdo;
 
     public function __construct(String $host, String $user, String $password, String $database) {
         global $TABLES;
+        $TABLES = [
+            "CREATE TABLE IF NOT EXISTS `users` (
+                `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                `login` VARCHAR(127) UNIQUE,
+                `password` VARCHAR(127)
+            );",
+            "CREATE TABLE IF NOT EXISTS `messages` (
+                `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                `user_id` BIGINT NOT NULL,
+                `text` LONGTEXT,
+                `time` INT NOT NULL,
+                FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+            );",
+        ];
         $this->pdo = new PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         foreach ($TABLES as $table) {
@@ -44,26 +45,26 @@ class Database {
             return false;
         }
         //delete user messages
-        $queryToDeleteUsersMessages = "DELETE FROM `messages` WHERE `user_id` LIKE ?";
-        $stmt = $this->connection->prepare($queryToDeleteUsersMessages);
-        $stmt->bind_param("s", $id);
-        $stmt->execute();
+        $queryToDeleteUsersMessages = "DELETE FROM `messages` WHERE `user_id`=:id;";
+        $stmt = $this->pdo->prepare($queryToDeleteUsersMessages);
+        $stmt->execute([":id" => $id]);
 
         //delete user
-        $queryToDeleteUser = "DELETE FROM `users` WHERE `id` LIKE ?";
-        $stmt = $this->connection->prepare($queryToDeleteUser);
-        $stmt->bind_param("s", $id);
-        $stmt->execute();
+        $queryToDeleteUser = "DELETE FROM `users` WHERE `id`=:id;";
+        $stmt = $this->pdo->prepare($queryToDeleteUser);;
+        $stmt->execute([":id" => $id]);;
         return true;
     }
 
     public function getAllUsers(): array|null {
-        $userQuery = mysqli_query($this->connection, "SELECT `login` FROM `users`");
-        if ($userQuery->num_rows == 0) {
+        $userQuery = $this->pdo->prepare("SELECT `login` FROM `users`");
+        $userQuery->execute();
+        $users = $userQuery->fetchAll();
+        if (!$users) {
             return null;
         }
 
-        return mysqli_fetch_all($userQuery);
+        return $users;
     }
 
     public function addUser(String $login, String $password): void {
