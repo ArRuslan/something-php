@@ -12,6 +12,5 @@ include "Database.php";
 
 $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 $db->addMessage($_SESSION["login"], $_POST["text"]);
-$db->close();
 
 header("Location: /dialogs");

@@ -9,9 +9,17 @@ include "Database.php";
 
 $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 if(!$db->checkUserPassword($_POST["login"], $_POST["password"])) {
-    // TODO: show user an error
-    header("Location: /auth");
-    die;
+    die("
+            <html>
+                <head>
+                    <meta http-equiv=\"refresh\" content=\"3;url=/auth\" />
+                </head>
+                <body>
+                    <h1>Wrong login or password!</h1>
+                    <a href='/auth'>Redirecting in 3 seconds...</a>
+                </body>
+            </html>
+        ");
 }
 
 session_start();

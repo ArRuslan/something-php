@@ -1,47 +1,65 @@
 <?php
 
+$TABLES = [
+    "CREATE TABLE IF NOT EXISTS `users` (
+        `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+        `login` VARCHAR(128) UNIQUE,
+        `password` VARCHAR(128)
+    );",
+    "CREATE TABLE IF NOT EXISTS `messages` (
+        `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+        `user_id` BIGINT NOT NULL,
+        `text` LONGTEXT,
+        `time` INT NOT NULL,
+        FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+    );",
+];
+
 class Database {
-    private mysqli $connection;
+    private PDO $pdo;
 
     public function __construct(String $host, String $user, String $password, String $database) {
-        $this->connection = mysqli_connect($host, $user, $password, $database);
-        mysqli_query($this->connection, "CREATE TABLE IF NOT EXISTS `users` (`id` BIGINT AUTO_INCREMENT PRIMARY KEY, `login` VARCHAR(128) UNIQUE, `password` VARCHAR(128));");
-        mysqli_query($this->connection, "CREATE TABLE IF NOT EXISTS `messages` (`id` BIGINT AUTO_INCREMENT PRIMARY KEY, `user_id` BIGINT NOT NULL, `text` LONGTEXT, `time` INT NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users`(`id`));");
-    }
-
-    public function close(): void {
-        $this->connection->close();
-    }
-
-    public function __destruct() {
-        $this->close();
+        global $TABLES;
+        $this->pdo = new PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        foreach ($TABLES as $table) {
+            $this->pdo->exec($table);
+        }
     }
 
     public function getIdByLogin(String $login): ?String {
-        $query = mysqli_query($this->connection, "SELECT `id` FROM `users` WHERE `login`='".$this->connection->real_escape_string($login)."';");
-        if($query->num_rows == 0)
+        $get_user_stmt = $this->pdo->prepare("SELECT `id` FROM `users` WHERE `login`=:login;");
+        $get_user_stmt->execute([":login" => $login]);
+        $user = $get_user_stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$user)
             return null;
-        return mysqli_fetch_assoc($query)["id"];
+
+        return $user["id"];
     }
 
     public function addUser(String $login, String $password): void {
+        $insert_user_stmt = $this->pdo->prepare("INSERT INTO `users` (`login`, `password`) VALUES (:login, :password);");
         $password = password_hash($password, PASSWORD_BCRYPT);
-        mysqli_query($this->connection, "INSERT INTO `users` (`login`, `password`) VALUES ('".$this->connection->real_escape_string($login)."', '".$this->connection->real_escape_string($password)."');");
+        $insert_user_stmt->execute([":login" => $login, ":password" => $password]);
     }
 
     public function checkUserPassword(String $login, String $password): bool {
-        $query = mysqli_query($this->connection, "SELECT `password` FROM `users` WHERE `login`='".$this->connection->real_escape_string($login)."';");
-        if($query->num_rows === 0)
+        $get_pwd_stmt = $this->pdo->prepare("SELECT `password` FROM `users` WHERE `login`=:login;");
+        $get_pwd_stmt->execute([":login" => $login]);
+        $user = $get_pwd_stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$user)
             return false;
-        $row = mysqli_fetch_assoc($query);
-        return password_verify($password, $row["password"]);
+
+        return password_verify($password, $user["password"]);
     }
 
     public function addMessage(String $login, String $text): void {
         $id = $this->getIdByLogin($login);
         if($id === null)
             return;
-        mysqli_query($this->connection, "INSERT INTO `messages` (`user_id`, `text`, `time`) VALUES (".$id.", '".$this->connection->real_escape_string($text)."', ".time().");");
+
+        $insert_message_stmt = $this->pdo->prepare("INSERT INTO `messages` (`user_id`, `text`, `time`) VALUES (:user_id, :text, :time);");
+        $insert_message_stmt->execute([":user_id" => $id, ":text" => $text, ":time" => time()]);
     }
 
     public function getUserMessages(String $login): array {
@@ -50,14 +68,13 @@ class Database {
         if($id === null)
             return $result;
 
-        $query = mysqli_query($this->connection, "SELECT `text`, `time` FROM `messages` WHERE `user_id`='".$id."';");
-        if($query->num_rows === 0)
-            return $result;
+        $get_messages_stmt = $this->pdo->prepare("SELECT `text`, `time` FROM `messages` WHERE `user_id`=:user_id;");
+        $get_messages_stmt->execute([":user_id" => $id]);
 
-        while($row = mysqli_fetch_assoc($query)) {
+        while($message = $get_messages_stmt->fetch(PDO::FETCH_ASSOC)) {
             array_push($result, array(
-                "text" => $row["text"],
-                "time" => date("d.m.Y H:i:s", $row["time"]),
+                "text" => $message["text"],
+                "time" => date("d.m.Y H:i:s", $message["time"]),
             ));
         }
 
