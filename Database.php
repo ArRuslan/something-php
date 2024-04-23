@@ -37,6 +37,35 @@ class Database {
         return $user["id"];
     }
 
+    public function deleteUserByLogin(string $login): bool {
+        $id = $this->getIdByLogin($login);
+        if ($id == null) {
+            echo "User with this login was not found! Operation cannot be finished successfully";
+            return false;
+        }
+        //delete user messages
+        $queryToDeleteUsersMessages = "DELETE FROM `messages` WHERE `user_id` LIKE ?";
+        $stmt = $this->connection->prepare($queryToDeleteUsersMessages);
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+
+        //delete user
+        $queryToDeleteUser = "DELETE FROM `users` WHERE `id` LIKE ?";
+        $stmt = $this->connection->prepare($queryToDeleteUser);
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        return true;
+    }
+
+    public function getAllUsers(): array|null {
+        $userQuery = mysqli_query($this->connection, "SELECT `login` FROM `users`");
+        if ($userQuery->num_rows == 0) {
+            return null;
+        }
+
+        return mysqli_fetch_all($userQuery);
+    }
+
     public function addUser(String $login, String $password): void {
         $insert_user_stmt = $this->pdo->prepare("INSERT INTO `users` (`login`, `password`) VALUES (:login, :password);");
         $password = password_hash($password, PASSWORD_BCRYPT);
