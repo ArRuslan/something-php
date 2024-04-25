@@ -1,4 +1,5 @@
-<?php
+<?php namespace WebpageClasses;
+use DatabaseClass\Database;
 require "AdminWebpage.php";
 include "Database.php";
 include "config.php";
@@ -50,9 +51,9 @@ class AdminDeleteUserWebpage extends AdminWebpage {
         return $this->footer;
     }
 
-    private function fillTable(): DOMDocument {
+    private function fillTable(): \DOMDocument {
         $document = file_get_contents("pages/adminPages/deleteUser.php");
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->loadHTML($document);
         $tableBody = $dom->getElementById("table-body");
         $userArray = $this->db->getAllUsers();

@@ -1,4 +1,5 @@
 <?php
+use DatabaseClass\Database as Database;
 
 session_start();
 

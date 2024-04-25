@@ -1,4 +1,5 @@
 <?php
+use DatabaseClass\Database as Database;
 if(!isset($_POST["login"]) || !isset($_POST["password"])) {
     header("Location: /auth");
     die;

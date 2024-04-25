@@ -1,5 +1,5 @@
 <?php
-
+use DatabaseClass\Database as Database;
 if(!isset($_POST["user_login"])) {
     header("Location: /delete_user");
     die;

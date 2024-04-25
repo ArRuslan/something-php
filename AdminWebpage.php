@@ -1,4 +1,4 @@
-<?php
+<?php namespace WebpageClasses;
 require "BaseWebpage.php";
 require "constants.php";
 

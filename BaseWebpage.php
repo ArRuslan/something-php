@@ -1,4 +1,4 @@
-<?php
+<?php namespace WebpageClasses;
 
 interface BaseWebpage {
     public function getTitle(): String;

@@ -1,7 +1,7 @@
-<?php
+<?php namespace DatabaseClass;
 
 class Database {
-    private PDO $pdo;
+    private \PDO $pdo;
 
     public function __construct(String $host, String $user, String $password, String $database) {
         $SETUP = [
@@ -21,8 +21,8 @@ class Database {
         ];
 
         try {
-            $this->pdo = new PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
-        } catch(PDOException $e) {
+            $this->pdo = new \PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
+        } catch(\PDOException $e) {
             echo "Failed to connect to database!";
             die;
         }
@@ -31,7 +31,7 @@ class Database {
             foreach ($SETUP as $setup) {
                 $this->pdo->exec($setup);
             }
-        } catch(PDOException $e) {
+        } catch(\PDOException $e) {
             echo "Failed to set up database!";
             die;
         }
@@ -41,7 +41,7 @@ class Database {
     public function getIdByLogin(String $login): ?String {
         $get_user_stmt = $this->pdo->prepare("SELECT `id` FROM `users` WHERE `login`=:login;");
         $get_user_stmt->execute([":login" => $login]);
-        $user = $get_user_stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $get_user_stmt->fetch(\PDO::FETCH_ASSOC);
         if(!$user)
             return null;
 
@@ -97,7 +97,7 @@ class Database {
                 $insert_message_stmt->execute([":user_id" => $id, ":text" => $message, ":time" => time()]);
             }
             $this->pdo->commit();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw $e;
         }
@@ -106,7 +106,7 @@ class Database {
     public function checkUserPassword(String $login, String $password): bool {
         $get_pwd_stmt = $this->pdo->prepare("SELECT `password` FROM `users` WHERE `login`=:login;");
         $get_pwd_stmt->execute([":login" => $login]);
-        $user = $get_pwd_stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $get_pwd_stmt->fetch(\PDO::FETCH_ASSOC);
         if(!$user)
             return false;
 
@@ -131,7 +131,7 @@ class Database {
         $get_messages_stmt = $this->pdo->prepare("SELECT `text`, `time` FROM `messages` WHERE `user_id`=:user_id;");
         $get_messages_stmt->execute([":user_id" => $id]);
 
-        while($message = $get_messages_stmt->fetch(PDO::FETCH_ASSOC)) {
+        while($message = $get_messages_stmt->fetch(\PDO::FETCH_ASSOC)) {
             array_push($result, array(
                 "text" => $message["text"],
                 "time" => date("d.m.Y H:i:s", $message["time"]),
