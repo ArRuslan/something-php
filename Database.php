@@ -79,8 +79,28 @@ class Database {
 
     public function addUser(String $login, String $password): void {
         $insert_user_stmt = $this->pdo->prepare("INSERT INTO `users` (`login`, `password`) VALUES (:login, :password);");
+        $insert_message_stmt = $this->pdo->prepare("INSERT INTO `messages` (`user_id`, `text`, `time`) VALUES (:user_id, :text, :time);");
+
         $password = password_hash($password, PASSWORD_BCRYPT);
-        $insert_user_stmt->execute([":login" => $login, ":password" => $password]);
+
+        $messages = [
+            "Welcome to IdkChat!",
+            "This is your personal chat",
+            "But you can create dialogs with other users by pressing \"New dialog\" button!",
+        ];
+
+        $this->pdo->beginTransaction();
+        try {
+            $insert_user_stmt->execute([":login" => $login, ":password" => $password]);
+            $id = $this->getIdByLogin($login);
+            foreach ($messages as $message) {
+                $insert_message_stmt->execute([":user_id" => $id, ":text" => $message, ":time" => time()]);
+            }
+            $this->pdo->commit();
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
     }
 
     public function checkUserPassword(String $login, String $password): bool {
