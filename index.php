@@ -1,4 +1,4 @@
-<?php
+<?php namespace WebpageClasses;
 session_start();
 
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
@@ -60,7 +60,7 @@ $body = $page->getBody();
             </ul>
             <div class="text-end">
             <a href="/login.php">
-            <button type="button" class="btn btn-outline-light me-2" onclick="deleteExceptHeader()">Login</button>
+            <button type="button" class="btn btn-outline-light me-2">Login</button>
             </a>
             <button type="button" class="btn btn-warning">Sign-up</button>
             </div>

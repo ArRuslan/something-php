@@ -1,4 +1,5 @@
 <?php
+use DatabaseClass\Database as Database;
 if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
