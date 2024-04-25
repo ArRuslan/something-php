@@ -1,13 +1,11 @@
 <?php
 
-$TABLES;
-
 class Database {
     private PDO $pdo;
 
     public function __construct(String $host, String $user, String $password, String $database) {
-        global $TABLES;
-        $TABLES = [
+        $SETUP = [
+            "CREATE DATABASE IF NOT EXISTS `$database`;",
             "CREATE TABLE IF NOT EXISTS `users` (
                 `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
                 `login` VARCHAR(127) UNIQUE,
@@ -21,11 +19,23 @@ class Database {
                 FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
             );",
         ];
-        $this->pdo = new PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        foreach ($TABLES as $table) {
-            $this->pdo->exec($table);
+
+        try {
+            $this->pdo = new PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
+        } catch(PDOException $e) {
+            echo "Failed to connect to database!";
+            die;
         }
+
+        try {
+            foreach ($SETUP as $setup) {
+                $this->pdo->exec($setup);
+            }
+        } catch(PDOException $e) {
+            echo "Failed to set up database!";
+            die;
+        }
+
     }
 
     public function getIdByLogin(String $login): ?String {
