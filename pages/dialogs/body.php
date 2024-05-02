@@ -1,13 +1,13 @@
 <?php
 use DatabaseClass\Database as Database;
+
+include "Database.php";
+include "config.php";
+
 if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
 }
-
-include "Database.php";
-
-include "config.php";
 
 $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 

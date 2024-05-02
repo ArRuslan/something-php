@@ -18,12 +18,12 @@ class echoServer extends WebSocketServer {
     protected array $charUsers = array();
     protected string $userClass = "ChatUser";
     protected JWT $jwt;
-    protected Database $db;
+    protected DatabaseClass\Database $db;
 
     function __construct(String $addr, String $port, int $bufferLength = 2048) {
         parent::__construct($addr, $port, $bufferLength);
         $this->jwt = new JWT($GLOBALS["jwt_key"]);
-        $this->db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+        $this->db = new DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
     protected function process ($user, String $message): void {
