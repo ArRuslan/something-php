@@ -3,7 +3,7 @@
         <div class="text-center card-header h3" id="authTitle">Login</div>
         <div class="card-body">
             <div id="authAlertContainer"></div>
-            <form id="loginForm" class="d-flex flex-column gap-3" action="/login.php" method="POST"> <!-- onsubmit="login(); return false;"-->
+            <form id="loginForm" class="d-flex flex-column gap-3" action="/scripts/login.php" method="POST"> <!-- onsubmit="login(); return false;"-->
                 <div class="form-group">
                     <label for="login_loginInput">Login</label>
                     <input name="login" type="text" class="form-control" id="login_loginInput" placeholder="Enter login" required minlength="5" maxlength="32">
@@ -18,7 +18,7 @@
                 </div>
             </form>
 
-            <form id="signupForm" class="d-none flex-column gap-3" action="/register.php" method="POST"> <!-- onsubmit="signup(); return false;">-->
+            <form id="signupForm" class="d-none flex-column gap-3" action="/scripts/register.php" method="POST"> <!-- onsubmit="signup(); return false;">-->
                 <div class="form-group">
                     <label for="signup_loginInput">Login</label>
                     <input name="login" type="text" class="form-control" id="signup_loginInput" placeholder="Enter login" required minlength="5" maxlength="32">

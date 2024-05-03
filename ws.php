@@ -1,11 +1,11 @@
 <?php
 
 require_once "config.php";
-require_once "websockets.php";
-require_once "jwt.php";
+require_once "lib/websockets.php";
+require_once "lib/jwt.php";
 include_once "Database.php";
 
-class ChatUser extends WebSocketUser {
+class ChatUser extends Lib\WebSocketUser {
     public String | null $login;
 
     function __construct(String $id, Socket $socket) {
@@ -14,15 +14,15 @@ class ChatUser extends WebSocketUser {
     }
 }
 
-class echoServer extends WebSocketServer {
+class ChatServer extends Lib\WebSocketServer {
     protected array $charUsers = array();
     protected string $userClass = "ChatUser";
-    protected JWT $jwt;
+    protected Lib\JWT $jwt;
     protected DatabaseClass\Database $db;
 
     function __construct(String $addr, String $port, int $bufferLength = 2048) {
         parent::__construct($addr, $port, $bufferLength);
-        $this->jwt = new JWT($GLOBALS["jwt_key"]);
+        $this->jwt = new Lib\JWT($GLOBALS["jwt_key"]);
         $this->db = new DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
@@ -46,7 +46,7 @@ class echoServer extends WebSocketServer {
             case "identify": {
                 try {
                     $data = $this->jwt->decode($data["d"]["token"]);
-                } catch (JWTException $e) {
+                } catch (Lib\JWTException $e) {
                     echo $e;
                     $this->disconnect($user->socket, true, 4001);
                     return;
@@ -100,7 +100,7 @@ class echoServer extends WebSocketServer {
     }
 }
 
-$echo = new echoServer("0.0.0.0","8089", 1024 * 32);
+$echo = new ChatServer("0.0.0.0","8089", 1024 * 32);
 
 try {
     $echo->run();

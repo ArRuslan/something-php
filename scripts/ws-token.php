@@ -6,10 +6,10 @@ if (!isset($_SESSION["login"])) {
     die;
 }
 
-include "config.php";
-include_once "jwt.php";
+include "../config.php";
+include_once "../lib/jwt.php";
 
-$jwt = new JWT($GLOBALS["jwt_key"]);
+$jwt = new Lib\JWT($GLOBALS["jwt_key"]);
 
 echo json_encode([
     "auth_token" => $jwt->encode([

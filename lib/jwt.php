@@ -1,10 +1,13 @@
-<?php
+<?php namespace Lib;
+
+use InvalidArgumentException;
+use stdClass;
 
 class JWTException extends InvalidArgumentException {
 }
 
 trait ValidatesJWT {
-    protected function validateConfig($key, int $maxAge) {
+    protected function validateConfig($key, int $maxAge): void {
         if (empty($key)) {
             throw new JWTException('Signing key cannot be empty', static::ERROR_KEY_EMPTY);
         }
@@ -14,7 +17,7 @@ trait ValidatesJWT {
         }
     }
 
-    protected function validateHeader(array $header) {
+    protected function validateHeader(array $header): void {
         if (empty($header['alg'])) {
             throw new JWTException('Invalid token: Missing header algo', static::ERROR_ALGO_MISSING);
         }
@@ -23,13 +26,13 @@ trait ValidatesJWT {
         }
     }
 
-    protected function validateTimestamps(array $payload) {
+    protected function validateTimestamps(array $payload): void {
         $timestamp = time();
         if(!isset($payload["exp"]) || $timestamp > $payload["exp"])
             throw new JWTException('Invalid token: ' . static::ERROR_TOKEN_EXPIRED, "Expired");
     }
 
-    protected function validateLastJson() {
+    protected function validateLastJson(): void {
         if (JSON_ERROR_NONE === json_last_error()) {
             return;
         }

@@ -82,7 +82,7 @@ function initWs() {
     let ws = window._WS = new WebSocket(window.WS_ENDPOINT);
 
     ws.addEventListener("open", async (event) => {
-        let resp = await fetch("/ws-token.php");
+        let resp = await fetch("/scripts/ws-token.php");
         if(resp.status === 401) {
             location.href = "/auth";
         } else if(resp.status !== 200) {

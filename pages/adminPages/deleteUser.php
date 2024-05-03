@@ -9,7 +9,7 @@
 <body>
     <h2 style="text-align: center;">Delete user feature</h2>
     <div id="input-user-login-div">
-        <form method="POST" action="/pages/adminPages/php-scripts/delete-user.php">
+        <form method="POST" action="/scripts/delete-user.php">
             <p>Input the login of a user you want to delete</p>
             <input type="text" id="input-user-login" placeholder="login..." required name="user_login">
             <button id="delete-submit" type="submit">Delete user</button>

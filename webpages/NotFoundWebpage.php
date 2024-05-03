@@ -1,14 +1,14 @@
-<?php namespace WebpageClasses;
+<?php namespace Webpages;
 
 require "BaseWebpage.php";
 require "constants.php";
 
 class NotFoundWebpage implements BaseWebpage {
 
-    private String $title = "Not found";
-    private String $header = "<h1>Not found</h1>";
-    private String $body = "<div class='body'>You are trying to access resource that does not exist!</div>";
-    private String $footer;
+    private string $title = "Not found";
+    private string $header = "<h1>Not found</h1>";
+    private string $body = "<div class='body'>You are trying to access resource that does not exist!</div>";
+    private string $footer;
 
     function __construct() {
         global $FOOTER;

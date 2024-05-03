@@ -1,17 +1,18 @@
-<?php namespace WebpageClasses;
+<?php namespace Webpages;
+
 require "BaseWebpage.php";
 require "constants.php";
 
 class DialogsWebpage implements BaseWebpage {
 
-    private String $title = "Dialogs";
-    private String $header = "<h1>Header</h1>";
-    private String $body = "<div class='body'>Body</div>";
-    private String $footer = "";
+    private string $title = "Dialogs";
+    private string $header = "<h1>Header</h1>";
+    private string $body = "<div class='body'>Body</div>";
+    private string $footer = "";
 
     public function __construct(?string $title = null) {
         global $FOOTER;
-        if($title != null) $this->title = $title;
+        if ($title != null) $this->title = $title;
     }
 
     public function getTitle(): string {

@@ -58,7 +58,7 @@
 
         ws.addEventListener("open", async (event) => {
             bcStatus.innerText = "Connected to server! Authenticating...";
-            let resp = await fetch("/ws-token.php");
+            let resp = await fetch("/scripts/ws-token.php");
             if(resp.status === 401) {
                 location.href = "/auth";
             } else if(resp.status !== 200) {
