@@ -16,6 +16,7 @@ if (!isset($_SESSION["login"])) {
     <div class="container-for-features">
         <div class="list-group">
             <a href="/delete_user" class="list-group-item list-group-item-action list-group-item-primary">Delete user</a>
+            <a href="/broadcast" class="list-group-item list-group-item-action list-group-item-primary">Send message to all users</a>
         </div>
     </div>
 </body>

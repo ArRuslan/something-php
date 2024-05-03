@@ -1,13 +1,13 @@
 <?php
 use DatabaseClass\Database as Database;
+
+include "Database.php";
+include "config.php";
+
 if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
 }
-
-include "Database.php";
-
-include "config.php";
 
 $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 
@@ -60,7 +60,7 @@ $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_passwo
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="/logout.php">Sign out</a></li>
+                    <li><a class="dropdown-item" href="/scripts/logout.php">Sign out</a></li>
                 </ul>
             </div>
         </div>
@@ -98,11 +98,11 @@ $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_passwo
                     </ul>
                 </div>
                 <div class="d-flex gap-1 col-12 mb-3">
-                    <form action="/send_message.php" method="POST" class="d-flex gap-1 col-12 mb-3">
+                    <div class="d-flex gap-1 col-12 mb-3">
                         <input id="messageInput" type="text" class="form-control" placeholder="Message text..." required
                                maxlength="2048" name="text">
-                        <button type="submit" class="btn btn-primary" onclick="/*sendMessage();*/">Send</button>
-                    </form>
+                        <button type="submit" class="btn btn-primary" onclick="sendMessage();">Send</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,5 +1,10 @@
-<?php namespace WebpageClasses;
+<?php
+
+namespace Webpages;
+
 use DatabaseClass\Database;
+use DOMDocument;
+
 require "AdminWebpage.php";
 include "Database.php";
 include "config.php";
@@ -12,15 +17,7 @@ class AdminDeleteUserWebpage extends AdminWebpage {
     public Database $db;
 
     public function __construct(?string $title = null, ?string $header = null, ?string $body = null, ?string $footer = null) {
-        global $FOOTER;
-        if ($title != null) $this->title = $title;
-        if ($header != null) $this->header = $header;
-        if ($body != null) $this->body = $body;
-        if ($footer != null)
-            $this->footer = $footer;
-        else
-            $this->footer = $FOOTER;
-
+        parent::__construct($title, $header, $body, $footer);
         $this->db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
@@ -51,9 +48,9 @@ class AdminDeleteUserWebpage extends AdminWebpage {
         return $this->footer;
     }
 
-    private function fillTable(): \DOMDocument {
+    private function fillTable(): DOMDocument {
         $document = file_get_contents("pages/adminPages/deleteUser.php");
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadHTML($document);
         $tableBody = $dom->getElementById("table-body");
         $userArray = $this->db->getAllUsers();
