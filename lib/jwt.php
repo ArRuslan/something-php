@@ -1,4 +1,4 @@
-<?php namespace Lib;
+<?php namespace IdkChat\Lib;
 
 use InvalidArgumentException;
 use stdClass;

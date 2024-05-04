@@ -1,11 +1,11 @@
-<?php namespace Lib;
+<?php namespace IdkChat\Lib;
 
 use InvalidArgumentException;
 use Socket;
 
 class WebSocketUser {
     public Socket $socket;
-    public $id;
+    public string $id;
     public array $headers = array();
     public bool $handshake = false;
 

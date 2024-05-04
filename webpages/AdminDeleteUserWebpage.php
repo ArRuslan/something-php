@@ -1,19 +1,19 @@
 <?php
 
-namespace Webpages;
+namespace IdkChat\Webpages;
 
-use DatabaseClass\Database;
+use IdkChat\DatabaseClass\Database;
 use DOMDocument;
 
-require "AdminWebpage.php";
-include "Database.php";
-include "config.php";
+require_once "AdminWebpage.php";
+require_once $GLOBALS["ROOT_DIR"]."/Database.php";
+require_once $GLOBALS["ROOT_DIR"]."/config.php";
 
 class AdminDeleteUserWebpage extends AdminWebpage {
     private string $title = "Delete user";
     private string $header = "<h1>Header</h1>";
     private string $body = "<div class='body'>Body</div>";
-    private string $footer;
+    private string $footer = "";
     public Database $db;
 
     public function __construct(?string $title = null, ?string $header = null, ?string $body = null, ?string $footer = null) {
@@ -49,7 +49,9 @@ class AdminDeleteUserWebpage extends AdminWebpage {
     }
 
     private function fillTable(): DOMDocument {
-        $document = file_get_contents("pages/adminPages/deleteUser.php");
+        ob_start();
+        include_once $GLOBALS["ROOT_DIR"]."/pages/adminPages/deleteUser.php";
+        $document = ob_get_clean();
         $dom = new DOMDocument();
         $dom->loadHTML($document);
         $tableBody = $dom->getElementById("table-body");

@@ -1,15 +1,14 @@
 <?php
-use DatabaseClass\Database as Database;
 
-include "Database.php";
-include "config.php";
+include $GLOBALS["ROOT_DIR"]."/Database.php";
+include $GLOBALS["ROOT_DIR"]."/config.php";
 
 if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
 }
 
-$db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+$db = new IdkChat\DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 
 ?>
 
@@ -60,7 +59,7 @@ $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_passwo
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="/scripts/logout.php">Sign out</a></li>
+                    <li><a class="dropdown-item" href="/api/auth/logout">Sign out</a></li>
                 </ul>
             </div>
         </div>

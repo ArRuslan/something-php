@@ -1,103 +1,44 @@
-<?php
+<?php namespace IdkChat;
 
-use Webpages\HomeWebpage;
-use Webpages\AuthWebpage;
-use Webpages\DialogsWebpage;
-use Webpages\AdminWebpage;
-use Webpages\AdminDeleteUserWebpage;
-use Webpages\AdminBroadcastWebpage;
-use Webpages\NotFoundWebpage;
+$GLOBALS["ROOT_DIR"] = dirname(__FILE__);
 
-session_start();
+use IdkChat\Webpages\HomeWebpage;
+use IdkChat\Webpages\AuthWebpage;
+use IdkChat\Webpages\DialogsWebpage;
+use IdkChat\Webpages\AdminWebpage;
+use IdkChat\Webpages\AdminDeleteUserWebpage;
+use IdkChat\Webpages\AdminBroadcastWebpage;
+use IdkChat\Lib\WebpageRoute;
+use IdkChat\Lib\ApiRoute;
+use IdkChat\Lib\Router;
 
-$path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+include_once "lib/WebpageRoute.php";
+include_once "lib/ApiRoute.php";
+include_once "lib/Router.php";
 
-switch ($path) {
-    case "/":
-    case "/index":
-        require "webpages/HomeWebpage.php";
-        $page = new HomeWebpage();
-        break;
-    case "/auth":
-        require "webpages/AuthWebpage.php";
-        $page = new AuthWebpage();
-        break;
-    case "/dialogs":
-        require "webpages/DialogsWebpage.php";
-        $page = new DialogsWebpage("Dialogs");
-        break;
-    case "/admin":
-        require "webpages/AdminWebpage.php";
-        $page = new AdminWebpage("Admin features");
-        break;
-    case "/delete_user":
-        require "webpages/AdminDeleteUserWebpage.php";
-        $page = new AdminDeleteUserWebpage("Delete user");
-        break;
-    case "/broadcast":
-        require "webpages/AdminBroadcastWebpage.php";
-        $page = new AdminBroadcastWebpage("Broadcast");
-        break;
-    default:
-        require "webpages/NotFoundWebpage.php";
-        $page = new NotFoundWebpage();
-        break;
-}
+$router = Router::getInstance();
+$router->get("/", new WebpageRoute(HomeWebpage::class));
+$router->get("/index", new WebpageRoute(HomeWebpage::class));
+$router->get("/auth", new WebpageRoute(AuthWebpage::class));
+$router->get("/dialogs", new WebpageRoute(DialogsWebpage::class));
+$router->get("/admin", new WebpageRoute(AdminWebpage::class));
+$router->get("/admin/delete-user", new WebpageRoute(AdminDeleteUserWebpage::class));
+$router->get("/admin/broadcast", new WebpageRoute(AdminBroadcastWebpage::class));
 
-$body = $page->getBody();
+$router->post("/api/auth/login", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/login.php";
+}));
+$router->post("/api/auth/register", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/register.php";
+}));
+$router->get("/api/auth/logout", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/logout.php";
+}));
+$router->post("/api/admin/delete-user", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/delete-user.php";
+}));
+$router->get("/api/ws-token", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/ws-token.php";
+}));
 
-?>
-
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $page->getTitle() ?></title>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/assets/css/home.css"/>
-</head>
-<body>
-    <header class="p-3 colorbg text-white">    
-        <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-            </a>
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><button class="bdel"><a href="/index" class="nav-link px-2 text-secondary">IDKChat</a></button></li>
-            <li><button class="bdel"><a href="/dialogs" class="nav-link px-2 text-white">Dialogs</a></button></li>
-            <li><button class="bdel" onclick="loadContent('faq')"><a href="#" class="nav-link px-2 text-white">FAQs</a></button></li>
-            <li><button class="bdel" onclick="loadContent('about')"><a href="#" class="nav-link px-2 text-white">About</a></button></li>
-            <li><button class="bdel"><a href="/admin" class="nav-link px-2 text-white">Admin</a></button></li>
-            </ul>
-            <div class="text-end">
-            <a href="/scripts/login.php">
-            <button type="button" class="btn btn-outline-light me-2">Login</button>
-            </a>
-            <button type="button" class="btn btn-warning">Sign-up</button>
-            </div>
-        </div>
-        </div>
-    </header>
-
-    <script>
-        function loadContent(contentType){
-            switch(contentType){
-                case 'faq':
-                    window.location.href='/index?faq=true';
-                    break;
-                case 'about':
-                    window.location.href='/index?about=true';
-                    break;
-                default:
-                window.location.href='/index';
-            }
-        }
-    </script>
-<?php
-echo $body;
-echo $page->getFooter();
-?>
-</body>
-</html>
+echo $router->doTheThing();

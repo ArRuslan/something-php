@@ -6,3 +6,5 @@ $FOOTER = "<div class='footer fixed-bottom'>
         <p>Copyright 2024 All rights reserved</p>
     </div>
 </div>";
+
+$GLOBALS["FOOTER"] = $FOOTER;

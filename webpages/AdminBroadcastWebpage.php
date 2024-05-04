@@ -1,18 +1,15 @@
-<?php
+<?php namespace IdkChat\Webpages;
+use IdkChat\DatabaseClass\Database as Database;
 
-namespace Webpages;
-
-use DatabaseClass\Database;
-
-require "AdminWebpage.php";
-include "Database.php";
-include "config.php";
+require_once "AdminWebpage.php";
+require_once $GLOBALS["ROOT_DIR"]."/Database.php";
+require_once $GLOBALS["ROOT_DIR"]."/config.php";
 
 class AdminBroadcastWebpage extends AdminWebpage {
     private string $title = "Broadcast";
     private string $header = "<h1>Header</h1>";
     private string $body = "<div class='body'>Body</div>";
-    private string $footer;
+    private string $footer = "";
     public Database $db;
 
     public function __construct(?string $title = null, ?string $header = null, ?string $body = null, ?string $footer = null) {
@@ -31,7 +28,9 @@ class AdminBroadcastWebpage extends AdminWebpage {
     }
 
     public function getBody(): string {
-        return file_get_contents("pages/adminPages/broadcastMessage.php");
+        ob_start();
+        include_once $GLOBALS["ROOT_DIR"]."/pages/adminPages/broadcastMessage.php";
+        return ob_get_clean();
     }
 
     public function setBody(string $body): AdminBroadcastWebpage {

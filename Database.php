@@ -1,4 +1,4 @@
-<?php namespace DatabaseClass;
+<?php namespace IdkChat\DatabaseClass;
 
 class Database {
     private \PDO $pdo;

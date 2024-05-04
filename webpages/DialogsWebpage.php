@@ -1,7 +1,7 @@
-<?php namespace Webpages;
+<?php namespace IdkChat\Webpages;
 
-require "BaseWebpage.php";
-require "constants.php";
+require_once "BaseWebpage.php";
+require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
 class DialogsWebpage implements BaseWebpage {
 
@@ -11,7 +11,6 @@ class DialogsWebpage implements BaseWebpage {
     private string $footer = "";
 
     public function __construct(?string $title = null) {
-        global $FOOTER;
         if ($title != null) $this->title = $title;
     }
 

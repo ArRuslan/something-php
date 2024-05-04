@@ -1,4 +1,4 @@
-<?php namespace Webpages;
+<?php namespace IdkChat\Webpages;
 
 interface BaseWebpage {
     public function getTitle(): string;

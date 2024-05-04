@@ -1,3 +1,10 @@
+<?php
+if (!isset($_SESSION["login"])) {
+    header("Location: /auth");
+    die;
+}
+?>
+
 <h2 style="text-align: center;">Send message to all online users</h2>
 <div id="input-user-login-div">
     <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 50px;">
@@ -40,7 +47,7 @@
         }))
     }
 
-    function processWsReady(data) {
+    function processWsReady() {
         bcStatus.innerText = "Connected to server! You can now send messages!";
         bcBtn.disabled = "";
     }
@@ -56,9 +63,9 @@
         bcStatus.innerText = "Connecting to server...";
         let ws = window._WS = new WebSocket(window.WS_ENDPOINT);
 
-        ws.addEventListener("open", async (event) => {
+        ws.addEventListener("open", async () => {
             bcStatus.innerText = "Connected to server! Authenticating...";
-            let resp = await fetch("/scripts/ws-token.php");
+            let resp = await fetch("/api/ws-token");
             if(resp.status === 401) {
                 location.href = "/auth";
             } else if(resp.status !== 200) {

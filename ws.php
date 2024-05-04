@@ -5,7 +5,7 @@ require_once "lib/websockets.php";
 require_once "lib/jwt.php";
 include_once "Database.php";
 
-class ChatUser extends Lib\WebSocketUser {
+class ChatUser extends IdkChat\Lib\WebSocketUser {
     public String | null $login;
 
     function __construct(String $id, Socket $socket) {
@@ -14,16 +14,16 @@ class ChatUser extends Lib\WebSocketUser {
     }
 }
 
-class ChatServer extends Lib\WebSocketServer {
+class ChatServer extends IdkChat\Lib\WebSocketServer {
     protected array $charUsers = array();
     protected string $userClass = "ChatUser";
-    protected Lib\JWT $jwt;
-    protected DatabaseClass\Database $db;
+    protected IdkChat\Lib\JWT $jwt;
+    protected IdkChat\DatabaseClass\Database $db;
 
     function __construct(String $addr, String $port, int $bufferLength = 2048) {
         parent::__construct($addr, $port, $bufferLength);
-        $this->jwt = new Lib\JWT($GLOBALS["jwt_key"]);
-        $this->db = new DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+        $this->jwt = new IdkChat\Lib\JWT($GLOBALS["jwt_key"]);
+        $this->db = new IdkChat\DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
     protected function process ($user, String $message): void {
@@ -46,7 +46,7 @@ class ChatServer extends Lib\WebSocketServer {
             case "identify": {
                 try {
                     $data = $this->jwt->decode($data["d"]["token"]);
-                } catch (Lib\JWTException $e) {
+                } catch (IdkChat\Lib\JWTException $e) {
                     echo $e;
                     $this->disconnect($user->socket, true, 4001);
                     return;

@@ -1,7 +1,7 @@
-<?php namespace Webpages;
+<?php namespace IdkChat\Webpages;
 
-require "BaseWebpage.php";
-require "constants.php";
+require_once "BaseWebpage.php";
+require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
 class AdminWebpage implements BaseWebpage {
     private string $title = "AdminController";
@@ -10,14 +10,13 @@ class AdminWebpage implements BaseWebpage {
     private string $footer;
 
     public function __construct(?string $title = null, ?string $header = null, ?string $body = null, ?string $footer = null) {
-        global $FOOTER;
         if ($title != null) $this->title = $title;
         if ($header != null) $this->header = $header;
         if ($body != null) $this->body = $body;
         if ($footer != null)
             $this->footer = $footer;
         else
-            $this->footer = $FOOTER;
+            $this->footer = $GLOBALS["FOOTER"];
     }
 
     public function getTitle(): string {
@@ -39,7 +38,9 @@ class AdminWebpage implements BaseWebpage {
     }
 
     public function getBody(): string {
-        return file_get_contents("pages/adminPages/admin.php");
+        ob_start();
+        include_once $GLOBALS["ROOT_DIR"]."/pages/adminPages/admin.php";
+        return ob_get_clean();
     }
 
     public function setBody(string $body): AdminWebpage {

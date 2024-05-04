@@ -5,11 +5,10 @@ if (!isset($_SESSION["login"])) {
     http_response_code(401);
     die;
 }
+include_once $GLOBALS["ROOT_DIR"]."/config.php";
+include_once $GLOBALS["ROOT_DIR"]."/lib/jwt.php";
 
-include "../config.php";
-include_once "../lib/jwt.php";
-
-$jwt = new Lib\JWT($GLOBALS["jwt_key"]);
+$jwt = new IdkChat\Lib\JWT($GLOBALS["jwt_key"]);
 
 echo json_encode([
     "auth_token" => $jwt->encode([

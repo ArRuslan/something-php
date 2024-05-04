@@ -1,7 +1,7 @@
-<?php namespace Webpages;
+<?php namespace IdkChat\Webpages;
 
-require "BaseWebpage.php";
-require "constants.php";
+require_once "BaseWebpage.php";
+require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
 class AuthWebpage implements BaseWebpage {
 
@@ -11,14 +11,13 @@ class AuthWebpage implements BaseWebpage {
     private string $footer;
 
     public function __construct(?string $title = null, ?string $header = null, ?string $body = null, ?string $footer = null) {
-        global $FOOTER;
         if ($title != null) $this->title = $title;
         if ($header != null) $this->header = $header;
         if ($body != null) $this->body = $body;
         if ($footer != null)
             $this->footer = $footer;
         else
-            $this->footer = $FOOTER;
+            $this->footer = $GLOBALS["FOOTER"];
     }
 
     public function getTitle(): string {

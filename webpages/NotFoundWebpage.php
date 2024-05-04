@@ -1,7 +1,7 @@
-<?php namespace Webpages;
+<?php namespace IdkChat\Webpages;
 
-require "BaseWebpage.php";
-require "constants.php";
+require_once "BaseWebpage.php";
+require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
 class NotFoundWebpage implements BaseWebpage {
 
@@ -11,8 +11,7 @@ class NotFoundWebpage implements BaseWebpage {
     private string $footer;
 
     function __construct() {
-        global $FOOTER;
-        $this->footer = $FOOTER;
+        $this->footer = $GLOBALS["FOOTER"];
     }
 
     public function getTitle(): string {
