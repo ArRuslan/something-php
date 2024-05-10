@@ -2,6 +2,7 @@
 
 use IdkChat\Database\Models\MessageFactory;
 use IdkChat\Database\Models\UserFactory;
+use IdkChat\Lib\DbFactoryLoggingDecorator;
 
 require_once "config.php";
 require_once "lib/websockets.php";
@@ -10,6 +11,7 @@ require_once "lib/jwt.php";
 include_once "db/BaseDatabaseAdapter.php";
 include_once "db/models/User.php";
 include_once "db/models/Message.php";
+include_once $GLOBALS["ROOT_DIR"]."/lib/DbFactoryLoggingDecorator.php";
 include_once $GLOBALS["DB_ADAPTER_PATH"];
 
 class ChatUser extends IdkChat\Lib\WebSocketUser {
@@ -76,7 +78,8 @@ class ChatServer extends IdkChat\Lib\WebSocketServer {
             case "broadcast":
             case "message": {
                 $text = $data["d"]["text"];
-                $msg = MessageFactory::create($user->user_id, $text);
+                $msg = (new DbFactoryLoggingDecorator(MessageFactory::class))->create($user->user_id, $text);
+                //$msg = MessageFactory::create($user->user_id, $text);
 
                 foreach($this->charUsers as $u) {
                     $this->send($u, json_encode([
@@ -100,9 +103,6 @@ class ChatServer extends IdkChat\Lib\WebSocketServer {
     }
 
     protected function connected ($user) {
-        // Do nothing: This is just an echo server, there's no need to track the user.
-        // However, if we did care about the users, we would probably have a cookie to
-        // parse at this step, would be looking them up in permanent storage, etc.
     }
 
     protected function closed ($user) {
