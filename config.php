@@ -6,6 +6,7 @@ $GLOBALS["db_host"] = "test.db"; // Host for mysql adapter, path for sqlite
 $GLOBALS["db_user"] = "idkchatphp"; // Only used for mysql adapter
 $GLOBALS["db_password"] = $_ENV["DATABASE_PASSWORD"]; // Only used for mysql adapter
 $GLOBALS["db_database"] = "idkchatphp"; // Only used for mysql adapter
+$GLOBALS["db_autoconnect"] = true;
 $GLOBALS["jwt_key"] = $_ENV["JWT_KEY"];
 
 $GLOBALS["ROOT_DIR"] = dirname(__FILE__);

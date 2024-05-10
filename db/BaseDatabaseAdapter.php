@@ -47,7 +47,9 @@ abstract class BaseDatabaseAdapter extends Singleton {
         return $users;
     }
 
-    public function addUser(String $login, String $password): void {
+    public function addUser(String $login, String $password): int {
+        // TODO: replace with something like UserRegisterStrategy: create user via UserFactory and messages via MessageFactory
+
         $insert_user_stmt = $this->getPDO()->prepare("INSERT INTO `users` (`login`, `password`) VALUES (:login, :password);");
         $insert_message_stmt = $this->getPDO()->prepare("INSERT INTO `messages` (`user_id`, `text`, `time`) VALUES (:user_id, :text, :time);");
 
@@ -72,16 +74,18 @@ abstract class BaseDatabaseAdapter extends Singleton {
             $this->getPDO()->rollBack();
             throw $e;
         }
+
+        return $id;
     }
 
-    public function checkUserPassword(String $login, String $password): bool {
-        $get_pwd_stmt = $this->getPDO()->prepare("SELECT `password` FROM `users` WHERE `login`=:login;");
-        $get_pwd_stmt->execute([":login" => $login]);
-        $user = $get_pwd_stmt->fetch(\PDO::FETCH_ASSOC);
+    public function getUserRaw(int $user_id): array | null {
+        $get_user_stmt = $this->getPDO()->prepare("SELECT `login`, `password` FROM `users` WHERE `id`=:user_id;");
+        $get_user_stmt->execute([":user_id" => $user_id]);
+        $user = $get_user_stmt->fetch(\PDO::FETCH_ASSOC);
         if(!$user)
-            return false;
+            return null;
 
-        return password_verify($password, $user["password"]);
+        return [$user_id, $user["login"], $user["password"]];
     }
 
     public function addMessage(String $login, String $text): void {

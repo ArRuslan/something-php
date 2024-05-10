@@ -1,6 +1,9 @@
 <?php
 
-namespace Database\Models;
+namespace IdkChat\Database\Models;
+
+require_once $GLOBALS["ROOT_DIR"]."/config.php";
+include_once $GLOBALS["DB_ADAPTER_PATH"];
 
 class User {
     private int $id;
@@ -27,8 +30,29 @@ class User {
 }
 
 class UserFactory {
-    static function createUser(string $login, string $password): User {
-        // TODO: insert to database
-        return new User(0, $login, password_hash($password, PASSWORD_BCRYPT));
+    static function create(string $login, string $password): User {
+        $db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+        $id = $db->addUser($login, $password);
+        $raw = $db->getUserRaw($id);
+
+        return new User($id, $login, $raw[2]);
+    }
+
+    static function get(int $user_id): User | null {
+        $db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+        $raw = $db->getUserRaw($user_id);
+        if($raw == null)
+            return null;
+
+        return new User($user_id, $raw[1], $raw[2]);
+    }
+
+    static function getByLogin(string $login): User | null {
+        $db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+        $id = $db->getIdByLogin($login);
+        if($id == null)
+            return null;
+
+        return UserFactory::get($id);
     }
 }

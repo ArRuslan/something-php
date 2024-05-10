@@ -6,13 +6,17 @@ use PDOException;
 include_once "BaseDatabaseAdapter.php";
 
 class SqliteDatabaseAdapter extends BaseDatabaseAdapter {
-    private PDO $pdo;
+    private PDO|null $pdo = null;
 
     function getPDO(): PDO {
         return $this->pdo;
     }
 
     public function connect(string $host, ?string $user, ?string $password, ?string $database): void {
+        if($this->pdo != null) {
+            return;
+        }
+
         $SETUP = [
             "CREATE TABLE IF NOT EXISTS `users` (
                 `id` INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,4 +52,8 @@ class SqliteDatabaseAdapter extends BaseDatabaseAdapter {
             die;
         }
     }
+}
+
+if($GLOBALS["db_autoconnect"]) {
+    SqliteDatabaseAdapter::getInstance()->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 }

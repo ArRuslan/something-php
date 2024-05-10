@@ -1,15 +1,21 @@
 <?php namespace IdkChat\Database;
 
+use PDO;
+
 include_once "BaseDatabaseAdapter.php";
 
 class MysqlDatabaseAdapter extends BaseDatabaseAdapter {
-    private \PDO $pdo;
+    private PDO|null $pdo = null;
 
-    function getPDO(): \PDO {
+    function getPDO(): PDO {
         return $this->pdo;
     }
 
     public function connect(String $host, ?String $user, ?String $password, ?String $database): void {
+        if($this->pdo != null) {
+            return;
+        }
+
         $SETUP = [
             "CREATE DATABASE IF NOT EXISTS `$database`;",
             "CREATE TABLE IF NOT EXISTS `users` (
@@ -27,7 +33,7 @@ class MysqlDatabaseAdapter extends BaseDatabaseAdapter {
         ];
 
         try {
-            $this->pdo = new \PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
+            $this->pdo = new PDO("mysql:host=$host;dbname=$database;charset=UTF8", $user, $password);
         } catch(\PDOException $e) {
             echo "Failed to connect to database!";
             die;
@@ -42,4 +48,8 @@ class MysqlDatabaseAdapter extends BaseDatabaseAdapter {
             die;
         }
     }
+}
+
+if($GLOBALS["db_autoconnect"]) {
+    MysqlDatabaseAdapter::getInstance()->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 }
