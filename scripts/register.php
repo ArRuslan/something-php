@@ -30,8 +30,7 @@ try {
             </html>
         ");
     }
-    echo $e;
-    die;
+    die("Unexpected error occurred.");
 }
 
 session_start();

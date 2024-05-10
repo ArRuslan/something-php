@@ -1,18 +1,23 @@
 <?php
 
+use IdkChat\Database\Models\MessageFactory;
+use IdkChat\Database\Models\UserFactory;
+
 require_once "config.php";
 require_once "lib/websockets.php";
 require_once "lib/jwt.php";
 
 include_once "db/BaseDatabaseAdapter.php";
+include_once "db/models/User.php";
+include_once "db/models/Message.php";
 include_once $GLOBALS["DB_ADAPTER_PATH"];
 
 class ChatUser extends IdkChat\Lib\WebSocketUser {
-    public String | null $login;
+    public int | null $user_id = null;
+    public String | null $login = null;
 
     function __construct(String $id, Socket $socket) {
         parent::__construct($id, $socket);
-        $this->login = null;
     }
 }
 
@@ -20,13 +25,10 @@ class ChatServer extends IdkChat\Lib\WebSocketServer {
     protected array $charUsers = array();
     protected string $userClass = "ChatUser";
     protected IdkChat\Lib\JWT $jwt;
-    protected IdkChat\Database\BaseDatabaseAdapter $db;
 
     function __construct(String $addr, String $port, int $bufferLength = 2048) {
         parent::__construct($addr, $port, $bufferLength);
         $this->jwt = new IdkChat\Lib\JWT($GLOBALS["jwt_key"]);
-        $this->db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
-        $this->db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
     protected function process ($user, String $message): void {
@@ -55,7 +57,15 @@ class ChatServer extends IdkChat\Lib\WebSocketServer {
                     return;
                 }
 
+                $db_user = UserFactory::getByLogin($data["login"]);
+                if($db_user == null) {
+                    $this->disconnect($user->socket, true, 4001);
+                    return;
+                }
+
                 $user->login = $data["login"];
+                $user->user_id = $db_user->getId();
+
                 $this->charUsers[] = $user;
                 $this->send($user, json_encode([
                     "op" => "ready",
@@ -66,7 +76,7 @@ class ChatServer extends IdkChat\Lib\WebSocketServer {
             case "broadcast":
             case "message": {
                 $text = $data["d"]["text"];
-                $this->db->addMessage($user->login, $text);
+                $msg = MessageFactory::create($user->user_id, $text);
 
                 foreach($this->charUsers as $u) {
                     $this->send($u, json_encode([
@@ -74,7 +84,7 @@ class ChatServer extends IdkChat\Lib\WebSocketServer {
                         "d" => [
                             "text" => $text,
                             "from" => $user->login,
-                            "time" => date("d.m.Y H:i:s", time()),
+                            "time" => $msg->getTimeFormatted(),
                             "me" => $u == $user,
                         ],
                     ]));

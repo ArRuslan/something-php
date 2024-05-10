@@ -1,17 +1,19 @@
 <?php namespace IdkChat\Database;
 
 include_once $GLOBALS["ROOT_DIR"]."/lib/Singleton.php";
+
 use IdkChat\Lib\Singleton;
+use PDO;
 
 abstract class BaseDatabaseAdapter extends Singleton {
-    abstract function getPDO(): \PDO;
+    abstract function getPDO(): PDO;
 
     public abstract function connect(String $host, ?String $user, ?String $password, ?String $database): void;
 
     public function getIdByLogin(String $login): ?String {
         $get_user_stmt = $this->getPDO()->prepare("SELECT `id` FROM `users` WHERE `login`=:login;");
         $get_user_stmt->execute([":login" => $login]);
-        $user = $get_user_stmt->fetch(\PDO::FETCH_ASSOC);
+        $user = $get_user_stmt->fetch(PDO::FETCH_ASSOC);
         if(!$user)
             return null;
 
@@ -81,20 +83,20 @@ abstract class BaseDatabaseAdapter extends Singleton {
     public function getUserRaw(int $user_id): array | null {
         $get_user_stmt = $this->getPDO()->prepare("SELECT `login`, `password` FROM `users` WHERE `id`=:user_id;");
         $get_user_stmt->execute([":user_id" => $user_id]);
-        $user = $get_user_stmt->fetch(\PDO::FETCH_ASSOC);
+        $user = $get_user_stmt->fetch(PDO::FETCH_ASSOC);
         if(!$user)
             return null;
 
         return [$user_id, $user["login"], $user["password"]];
     }
 
-    public function addMessage(String $login, String $text): void {
-        $id = $this->getIdByLogin($login);
-        if($id === null)
-            return;
+    public function addMessageRaw(int $user_id, String $text): array {
+        $time = time();
 
         $insert_message_stmt = $this->getPDO()->prepare("INSERT INTO `messages` (`user_id`, `text`, `time`) VALUES (:user_id, :text, :time);");
-        $insert_message_stmt->execute([":user_id" => $id, ":text" => $text, ":time" => time()]);
+        $insert_message_stmt->execute([":user_id" => $user_id, ":text" => $text, ":time" => $time]);
+
+        return [$this->getPDO()->lastInsertId(), $text, $time];
     }
 
     public function getUserMessages(String $login): array {
