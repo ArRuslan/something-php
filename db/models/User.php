@@ -3,6 +3,7 @@
 namespace IdkChat\Database\Models;
 
 require_once $GLOBALS["ROOT_DIR"]."/config.php";
+include_once "BaseFactory.php";
 include_once $GLOBALS["DB_ADAPTER_PATH"];
 
 class User {
@@ -29,7 +30,7 @@ class User {
     }
 }
 
-class UserFactory {
+class UserFactory implements BaseFactory {
     static function create(string $login, string $password): User {
         $db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
         $id = $db->addUser($login, $password);
