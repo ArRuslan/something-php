@@ -1,14 +1,15 @@
 <?php
 
-include $GLOBALS["ROOT_DIR"]."/Database.php";
 include $GLOBALS["ROOT_DIR"]."/config.php";
+include_once $GLOBALS["DB_ADAPTER_PATH"];
 
 if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
 }
 
-$db = new IdkChat\DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+$db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+$db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 
 ?>
 

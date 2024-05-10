@@ -3,7 +3,9 @@
 require_once "config.php";
 require_once "lib/websockets.php";
 require_once "lib/jwt.php";
-include_once "Database.php";
+
+include_once "db/BaseDatabaseAdapter.php";
+include_once $GLOBALS["DB_ADAPTER_PATH"];
 
 class ChatUser extends IdkChat\Lib\WebSocketUser {
     public String | null $login;
@@ -18,12 +20,13 @@ class ChatServer extends IdkChat\Lib\WebSocketServer {
     protected array $charUsers = array();
     protected string $userClass = "ChatUser";
     protected IdkChat\Lib\JWT $jwt;
-    protected IdkChat\DatabaseClass\Database $db;
+    protected IdkChat\Database\BaseDatabaseAdapter $db;
 
     function __construct(String $addr, String $port, int $bufferLength = 2048) {
         parent::__construct($addr, $port, $bufferLength);
         $this->jwt = new IdkChat\Lib\JWT($GLOBALS["jwt_key"]);
-        $this->db = new IdkChat\DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+        $this->db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+        $this->db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
     protected function process ($user, String $message): void {

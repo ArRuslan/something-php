@@ -5,9 +5,10 @@ if(!isset($_POST["login"]) || !isset($_POST["password"])) {
 }
 
 include_once $GLOBALS["ROOT_DIR"]."/config.php";
-include_once $GLOBALS["ROOT_DIR"]."/Database.php";
+include_once $GLOBALS["DB_ADAPTER_PATH"];
 
-$db = new IdkChat\DatabaseClass\Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+$db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+$db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 if(!$db->checkUserPassword($_POST["login"], $_POST["password"])) {
     die("
             <html lang=\"en\">
