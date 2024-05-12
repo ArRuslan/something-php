@@ -7,7 +7,7 @@ include_once "BaseDatabaseAdapter.php";
 class MysqlDatabaseAdapter extends BaseDatabaseAdapter {
     private PDO|null $pdo = null;
 
-    function getPDO(): PDO {
+    public function getPDO(): PDO {
         return $this->pdo;
     }
 

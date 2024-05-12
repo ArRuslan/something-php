@@ -1,9 +1,9 @@
 <?php namespace IdkChat\Webpages;
 
-require_once "BaseWebpage.php";
+require_once "BaseView.php";
 require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
-class AdminWebpage implements BaseWebpage {
+class AdminView implements BaseView {
     private string $title = "AdminController";
     private string $header = "<h1>Header</h1>";
     private string $body = "<div class='body'>Body</div>";
@@ -23,7 +23,7 @@ class AdminWebpage implements BaseWebpage {
         return $this->title;
     }
 
-    public function setTitle(string $title): AdminWebpage {
+    public function setTitle(string $title): AdminView {
         $this->title = $title;
         return $this;
     }
@@ -32,7 +32,7 @@ class AdminWebpage implements BaseWebpage {
         return $this->header;
     }
 
-    public function setHeader(string $header): AdminWebpage {
+    public function setHeader(string $header): AdminView {
         $this->header = $header;
         return $this;
     }
@@ -43,7 +43,7 @@ class AdminWebpage implements BaseWebpage {
         return ob_get_clean();
     }
 
-    public function setBody(string $body): AdminWebpage {
+    public function setBody(string $body): AdminView {
         return $this;
     }
 
@@ -51,7 +51,7 @@ class AdminWebpage implements BaseWebpage {
         return $this->footer;
     }
 
-    public function setFooter(string $footer): AdminWebpage {
+    public function setFooter(string $footer): AdminView {
         $this->footer = $footer;
         return $this;
     }

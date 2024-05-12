@@ -1,7 +1,10 @@
 <?php
 
-include $GLOBALS["ROOT_DIR"]."/config.php";
+use IdkChat\Database\Models\UserFactory;
+
+include_once $GLOBALS["ROOT_DIR"]."/config.php";
 include_once $GLOBALS["DB_ADAPTER_PATH"];
+include_once $GLOBALS["ROOT_DIR"]."/db/models/User.php";
 
 if (!isset($_SESSION["login"])) {
     header("Location: /auth");
@@ -10,6 +13,12 @@ if (!isset($_SESSION["login"])) {
 
 $db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
 $db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+
+$user = UserFactory::getByLogin($_SESSION["login"]);
+if ($user == null) {
+    header("Location: /auth");
+    die;
+}
 
 ?>
 
@@ -87,11 +96,11 @@ $db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], 
                 <hr class="w-100 my-1">
                 <div class="d-flex flex-grow-1" style="height: 0">
                     <ul class="d-block overflow-y-scroll list-unstyled w-100" id="messagesContainer">
-                        <?php foreach($db->getUserMessages($_SESSION["login"]) as $message) { ?>
+                        <?php foreach($user->getMessages() as $message) { ?>
                             <li class="message my-message">
                                 <div>
-                                    <span class="message-time">[<?php echo $message["time"] ?>]</span>
-                                    <span class="message-text"><?php echo $message["text"] ?></span>
+                                    <span class="message-time">[<?php echo $message->getTimeFormatted() ?>]</span>
+                                    <span class="message-text"><?php echo $message->getText() ?></span>
                                 </div>
                             </li>
                         <?php } ?>

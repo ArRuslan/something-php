@@ -35,10 +35,13 @@ class Message {
 }
 
 class MessageFactory implements BaseFactory {
-    static function create(int $user_id, string $message): Message {
-        $db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
-        $raw = $db->addMessageRaw($user_id, $message);
+    static function create(int $user_id, string $text): Message {
+        $time = time();
 
-        return new Message($raw[0], $raw[1], $raw[2]);
+        $pdo = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance()->getPDO();
+        $insert_message_stmt = $pdo->prepare("INSERT INTO `messages` (`user_id`, `text`, `time`) VALUES (:user_id, :text, :time);");
+        $insert_message_stmt->execute([":user_id" => $user_id, ":text" => $text, ":time" => $time]);
+
+        return new Message($pdo->lastInsertId(), $text, $time);
     }
 }

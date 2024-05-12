@@ -16,7 +16,7 @@ try {
     (new DbFactoryLoggingDecorator(UserFactory::class))->create($_POST["login"], $_POST["password"]);
     //UserFactory::create($_POST["login"], $_POST["password"]);
 } catch (PDOException $e) {
-    if ($e->errorInfo[1] == 1062) {
+    if ($e->errorInfo[1] == 1062 || $e->errorInfo[1] == 19) {
         die("
             <html lang=\"en\">
                 <head>
@@ -30,7 +30,8 @@ try {
             </html>
         ");
     }
-    die("Unexpected error occurred.");
+    error_log($e);
+    die("Unexpected error occurred. (".$e->errorInfo[1].")");
 }
 
 session_start();

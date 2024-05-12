@@ -3,13 +3,13 @@ namespace IdkChat\Webpages;
 
 use IdkChat\Database\BaseDatabaseAdapter;
 
-require_once "AdminWebpage.php";
+require_once "AdminView.php";
 require_once $GLOBALS["ROOT_DIR"]."/config.php";
 
 include_once $GLOBALS["ROOT_DIR"]."/db/BaseDatabaseAdapter.php";
 include_once $GLOBALS["DB_ADAPTER_PATH"];
 
-class AdminBroadcastWebpage extends AdminWebpage {
+class AdminBroadcastView extends AdminView {
     private string $title = "Broadcast";
     private string $header = "<h1>Header</h1>";
     private string $body = "<div class='body'>Body</div>";
@@ -22,12 +22,12 @@ class AdminBroadcastWebpage extends AdminWebpage {
         $this->db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
-    public function setTitle(string $title): AdminBroadcastWebpage {
+    public function setTitle(string $title): AdminBroadcastView {
         $this->title = $title;
         return $this;
     }
 
-    public function setHeader(string $header): AdminBroadcastWebpage {
+    public function setHeader(string $header): AdminBroadcastView {
         $this->header = $header;
         return $this;
     }
@@ -38,11 +38,11 @@ class AdminBroadcastWebpage extends AdminWebpage {
         return ob_get_clean();
     }
 
-    public function setBody(string $body): AdminBroadcastWebpage {
+    public function setBody(string $body): AdminBroadcastView {
         return $this;
     }
 
-    public function setFooter(string $footer): AdminBroadcastWebpage {
+    public function setFooter(string $footer): AdminBroadcastView {
         $this->footer = $footer;
         return $this;
     }

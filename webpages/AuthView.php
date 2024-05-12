@@ -1,11 +1,11 @@
 <?php namespace IdkChat\Webpages;
 
-require_once "BaseWebpage.php";
+require_once "BaseView.php";
 require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
-class HomeWebpage implements BaseWebpage {
+class AuthView implements BaseView {
 
-    private string $title = "Home";
+    private string $title = "Login";
     private string $header = "<h1>Header</h1>";
     private string $body = "<div class='body'>Body</div>";
     private string $footer;
@@ -24,7 +24,7 @@ class HomeWebpage implements BaseWebpage {
         return $this->title;
     }
 
-    public function setTitle(string $title): HomeWebpage {
+    public function setTitle(string $title): AuthView {
         $this->title = $title;
         return $this;
     }
@@ -33,16 +33,16 @@ class HomeWebpage implements BaseWebpage {
         return $this->header;
     }
 
-    public function setHeader(string $header): HomeWebpage {
+    public function setHeader(string $header): AuthView {
         $this->header = $header;
         return $this;
     }
 
     public function getBody(): string {
-        return file_get_contents("pages/index/body.html");
+        return file_get_contents("pages/auth/body.html");
     }
 
-    public function setBody(string $body): HomeWebpage {
+    public function setBody(string $body): AuthView {
         return $this;
     }
 
@@ -50,7 +50,7 @@ class HomeWebpage implements BaseWebpage {
         return $this->footer;
     }
 
-    public function setFooter(string $footer): HomeWebpage {
+    public function setFooter(string $footer): AuthView {
         $this->footer = $footer;
         return $this;
     }

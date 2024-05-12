@@ -8,7 +8,7 @@ include_once "BaseDatabaseAdapter.php";
 class SqliteDatabaseAdapter extends BaseDatabaseAdapter {
     private PDO|null $pdo = null;
 
-    function getPDO(): PDO {
+    public function getPDO(): PDO {
         return $this->pdo;
     }
 

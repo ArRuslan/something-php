@@ -1,9 +1,9 @@
 <?php namespace IdkChat\Webpages;
 
-require_once "BaseWebpage.php";
+require_once "BaseView.php";
 require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
-class DialogsWebpage implements BaseWebpage {
+class DialogsView implements BaseView {
 
     private string $title = "Dialogs";
     private string $header = "<h1>Header</h1>";
@@ -18,7 +18,7 @@ class DialogsWebpage implements BaseWebpage {
         return $this->title;
     }
 
-    public function setTitle(string $title): DialogsWebpage {
+    public function setTitle(string $title): DialogsView {
         $this->title = $title;
         return $this;
     }
@@ -27,7 +27,7 @@ class DialogsWebpage implements BaseWebpage {
         return $this->header;
     }
 
-    public function setHeader(string $header): DialogsWebpage {
+    public function setHeader(string $header): DialogsView {
         $this->header = $header;
         return $this;
     }
@@ -38,7 +38,7 @@ class DialogsWebpage implements BaseWebpage {
         return ob_get_clean();
     }
 
-    public function setBody(string $body): DialogsWebpage {
+    public function setBody(string $body): DialogsView {
         return $this;
     }
 
@@ -46,7 +46,7 @@ class DialogsWebpage implements BaseWebpage {
         return $this->footer;
     }
 
-    public function setFooter(string $footer): DialogsWebpage {
+    public function setFooter(string $footer): DialogsView {
         $this->footer = $footer;
         return $this;
     }

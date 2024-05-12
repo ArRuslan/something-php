@@ -4,14 +4,16 @@ namespace IdkChat\Webpages;
 
 use DOMDocument;
 use IdkChat\Database\BaseDatabaseAdapter;
+use IdkChat\Database\Models\UserFactory;
 
-require_once "AdminWebpage.php";
+require_once "AdminView.php";
 require_once $GLOBALS["ROOT_DIR"]."/config.php";
 
 include_once $GLOBALS["ROOT_DIR"]."/db/BaseDatabaseAdapter.php";
+include_once $GLOBALS["ROOT_DIR"]."/db/models/User.php";
 include_once $GLOBALS["DB_ADAPTER_PATH"];
 
-class AdminDeleteUserWebpage extends AdminWebpage {
+class AdminDeleteUserView extends AdminView {
     private string $title = "Delete user";
     private string $header = "<h1>Header</h1>";
     private string $body = "<div class='body'>Body</div>";
@@ -24,12 +26,12 @@ class AdminDeleteUserWebpage extends AdminWebpage {
         $this->db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
-    public function setTitle(string $title): AdminDeleteUserWebpage {
+    public function setTitle(string $title): AdminDeleteUserView {
         $this->title = $title;
         return $this;
     }
 
-    public function setHeader(string $header): AdminDeleteUserWebpage {
+    public function setHeader(string $header): AdminDeleteUserView {
         $this->header = $header;
         return $this;
     }
@@ -38,11 +40,11 @@ class AdminDeleteUserWebpage extends AdminWebpage {
         return (string)$this->fillTable()->saveHTML();
     }
 
-    public function setBody(string $body): AdminDeleteUserWebpage {
+    public function setBody(string $body): AdminDeleteUserView {
         return $this;
     }
 
-    public function setFooter(string $footer): AdminDeleteUserWebpage {
+    public function setFooter(string $footer): AdminDeleteUserView {
         $this->footer = $footer;
         return $this;
     }
@@ -58,7 +60,7 @@ class AdminDeleteUserWebpage extends AdminWebpage {
         $dom = new DOMDocument();
         $dom->loadHTML($document);
         $tableBody = $dom->getElementById("table-body");
-        $userArray = $this->db->getAllUsers();
+        $userArray = UserFactory::getAll();
         if ($userArray == null) {
             return $dom;
         }

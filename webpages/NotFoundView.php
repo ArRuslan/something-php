@@ -1,9 +1,9 @@
 <?php namespace IdkChat\Webpages;
 
-require_once "BaseWebpage.php";
+require_once "BaseView.php";
 require_once $GLOBALS["ROOT_DIR"]."/constants.php";
 
-class NotFoundWebpage implements BaseWebpage {
+class NotFoundView implements BaseView {
 
     private string $title = "Not found";
     private string $header = "<h1>Not found</h1>";
@@ -18,7 +18,7 @@ class NotFoundWebpage implements BaseWebpage {
         return $this->title;
     }
 
-    public function setTitle(string $title): NotFoundWebpage {
+    public function setTitle(string $title): NotFoundView {
         $this->title = $title;
         return $this;
     }
@@ -27,7 +27,7 @@ class NotFoundWebpage implements BaseWebpage {
         return $this->header;
     }
 
-    public function setHeader(string $header): NotFoundWebpage {
+    public function setHeader(string $header): NotFoundView {
         $this->header = $header;
         return $this;
     }
@@ -36,7 +36,7 @@ class NotFoundWebpage implements BaseWebpage {
         return $this->body;
     }
 
-    public function setBody(string $body): NotFoundWebpage {
+    public function setBody(string $body): NotFoundView {
         $this->body = $body;
         return $this;
     }
@@ -45,7 +45,7 @@ class NotFoundWebpage implements BaseWebpage {
         return $this->footer;
     }
 
-    public function setFooter(string $footer): NotFoundWebpage {
+    public function setFooter(string $footer): NotFoundView {
         $this->footer = $footer;
         return $this;
     }
