@@ -33,7 +33,7 @@ class Router extends Singleton {
         $this->add_route("DELETE", $path, $route);
     }
 
-    public function doTheThing(): string {
+    public function processRequest(): string {
         $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         $method = $_SERVER["REQUEST_METHOD"];
 

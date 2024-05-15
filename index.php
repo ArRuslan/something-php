@@ -41,4 +41,4 @@ $router->get("/api/ws-token", new ApiRoute(function() {
     include_once $GLOBALS["ROOT_DIR"]."/scripts/ws-token.php";
 }));
 
-echo $router->doTheThing();
+echo $router->processRequest();
