@@ -1,90 +1,49 @@
-<?php namespace WebpageClasses;
-session_start();
+<?php namespace IdkChat;
 
-$path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+$GLOBALS["ROOT_DIR"] = dirname(__FILE__);
 
-switch ($path) {
-    case "/":
-    case "/index":
-        require "HomeWebpage.php";
-        $page = new HomeWebpage();
-        break;
-    case "/auth":
-        require "AuthWebpage.php";
-        $page = new AuthWebpage();
-        break;
-    case "/dialogs":
-        require "DialogsWebpage.php";
-        $page = new DialogsWebpage("Dialogs");
-        break;
-    case "/admin":
-        require "AdminWebpage.php";
-        $page = new AdminWebpage("Admin features");
-        break;
-    case "/delete_user":
-        require "subpage-classes/AdminDeleteUserWebpage.php";
-        $page = new AdminDeleteUserWebpage("Delete user");
-        break;
-    default:
-        require "NotFoundWebpage.php";
-        $page = new NotFoundWebpage();
-        break;
-}
+use IdkChat\Webpages\HomeView;
+use IdkChat\Webpages\AuthView;
+use IdkChat\Webpages\DialogsView;
+use IdkChat\Webpages\AdminView;
+use IdkChat\Webpages\AdminDeleteUserView;
+use IdkChat\Webpages\AdminBroadcastView;
+use IdkChat\Lib\WebpageRoute;
+use IdkChat\Lib\ApiRoute;
+use IdkChat\Lib\Router;
+use IdkChat\Webpages\SettingsView;
 
-$body = $page->getBody();
+include_once "lib/WebpageRoute.php";
+include_once "lib/ApiRoute.php";
+include_once "lib/Router.php";
 
-?>
+$router = Router::getInstance();
+$router->get("/", new WebpageRoute(HomeView::class));
+$router->get("/index", new WebpageRoute(HomeView::class));
+$router->get("/auth", new WebpageRoute(AuthView::class));
+$router->get("/dialogs", new WebpageRoute(DialogsView::class));
+$router->get("/admin", new WebpageRoute(AdminView::class));
+$router->get("/admin/delete-user", new WebpageRoute(AdminDeleteUserView::class));
+$router->get("/admin/broadcast", new WebpageRoute(AdminBroadcastView::class));
+$router->get("/settings", new WebpageRoute(SettingsView::class));
 
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $page->getTitle() ?></title>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/assets/css/home.css"/>
-</head>
-<body>
-    <header class="p-3 colorbg text-white">    
-        <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-            </a>
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><button class="bdel"><a href="/index" class="nav-link px-2 text-secondary">IDKChat</a></button></li>
-            <li><button class="bdel"><a href="/pages/dialogs/body.php" class="nav-link px-2 text-white">Dialogs</a></button></li>
-            <li><button class="bdel" onclick="loadContent('faq')"><a href="#" class="nav-link px-2 text-white">FAQs</a></button></li>
-            <li><button class="bdel" onclick="loadContent('about')"><a href="#" class="nav-link px-2 text-white">About</a></button></li>
-            <li><button class="bdel"><a href="/admin" class="nav-link px-2 text-white">Admin</a></button></li>
-            </ul>
-            <div class="text-end">
-            <a href="/login.php">
-            <button type="button" class="btn btn-outline-light me-2">Login</button>
-            </a>
-            <button type="button" class="btn btn-warning">Sign-up</button>
-            </div>
-        </div>
-        </div>
-    </header>
+$router->post("/api/auth/login", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/login.php";
+}));
+$router->post("/api/auth/register", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/register.php";
+}));
+$router->get("/api/auth/logout", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/logout.php";
+}));
+$router->post("/api/admin/delete-user", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/delete-user.php";
+}));
+$router->get("/api/ws-token", new ApiRoute(function() {
+    include_once $GLOBALS["ROOT_DIR"]."/scripts/ws-token.php";
+}));
+$router->post("/api/theme/change-theme", new ApiRoute(function(){
+   include_once $GLOBALS["ROOT_DIR"]."/scripts/change_theme.php";
+}));
 
-    <script>
-        function loadContent(contentType){
-            switch(contentType){
-                case 'faq':
-                    window.location.href='/index?faq=true';
-                    break;
-                case 'about':
-                    window.location.href='/index?about=true';
-                    break;
-                default:
-                window.location.href='/index';
-            }
-        }
-    </script>
-<?php
-echo $body;
-echo $page->getFooter();
-?>
-</body>
-</html>
+echo $router->processRequest();

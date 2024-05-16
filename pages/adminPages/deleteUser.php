@@ -1,15 +1,23 @@
+<?php
+if (!isset($_SESSION["login"])) {
+    header("Location: /auth");
+    die;
+}
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/admin.css"/>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <title>Admin - Delete user</title>
 </head>
 <body>
     <h2 style="text-align: center;">Delete user feature</h2>
     <div id="input-user-login-div">
-        <form method="POST" action="/pages/adminPages/php-scripts/delete-user.php">
+        <form method="POST" action="/api/admin/delete-user">
             <p>Input the login of a user you want to delete</p>
             <input type="text" id="input-user-login" placeholder="login..." required name="user_login">
             <button id="delete-submit" type="submit">Delete user</button>

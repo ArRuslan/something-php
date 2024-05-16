@@ -1,19 +1,22 @@
 <?php
-use DatabaseClass\Database as Database;
+
+use IdkChat\Database\Models\UserFactory;
+
 if(!isset($_POST["login"]) || !isset($_POST["password"])) {
     header("Location: /auth");
     die;
 }
 
-include "config.php";
-include "Database.php";
+include_once $GLOBALS["ROOT_DIR"]."/config.php";
+include_once $GLOBALS["ROOT_DIR"]."/db/models/User.php";
 
-$db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
-if(!$db->checkUserPassword($_POST["login"], $_POST["password"])) {
+$user = UserFactory::getByLogin($_POST["login"]);
+if($user == null || !$user->validatePassword($_POST["password"])) {
     die("
-            <html>
+            <html lang=\"en\">
                 <head>
                     <meta http-equiv=\"refresh\" content=\"3;url=/auth\" />
+                    <title>Login</title>
                 </head>
                 <body>
                     <h1>Wrong login or password!</h1>

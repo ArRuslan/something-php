@@ -1,15 +1,24 @@
 <?php
-use DatabaseClass\Database as Database;
+
+use IdkChat\Database\Models\UserFactory;
+
+include_once $GLOBALS["ROOT_DIR"]."/config.php";
+include_once $GLOBALS["DB_ADAPTER_PATH"];
+include_once $GLOBALS["ROOT_DIR"]."/db/models/User.php";
+
 if (!isset($_SESSION["login"])) {
     header("Location: /auth");
     die;
 }
 
-include "Database.php";
+$db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+$db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
 
-include "config.php";
-
-$db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+$user = UserFactory::getByLogin($_SESSION["login"]);
+if ($user == null) {
+    header("Location: /auth");
+    die;
+}
 
 ?>
 
@@ -60,7 +69,7 @@ $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_passwo
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="/logout.php">Sign out</a></li>
+                    <li><a class="dropdown-item" href="/api/auth/logout">Sign out</a></li>
                 </ul>
             </div>
         </div>
@@ -87,22 +96,22 @@ $db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_passwo
                 <hr class="w-100 my-1">
                 <div class="d-flex flex-grow-1" style="height: 0">
                     <ul class="d-block overflow-y-scroll list-unstyled w-100" id="messagesContainer">
-                        <?php foreach($db->getUserMessages($_SESSION["login"]) as $message) { ?>
+                        <?php foreach($user->getMessages() as $message) { ?>
                             <li class="message my-message">
                                 <div>
-                                    <span class="message-time">[<?php echo $message["time"] ?>]</span>
-                                    <span class="message-text"><?php echo $message["text"] ?></span>
+                                    <span class="message-time">[<?php echo $message->getTimeFormatted() ?>]</span>
+                                    <span class="message-text"><?php echo $message->getText() ?></span>
                                 </div>
                             </li>
                         <?php } ?>
                     </ul>
                 </div>
                 <div class="d-flex gap-1 col-12 mb-3">
-                    <form action="/send_message.php" method="POST" class="d-flex gap-1 col-12 mb-3">
+                    <div class="d-flex gap-1 col-12 mb-3">
                         <input id="messageInput" type="text" class="form-control" placeholder="Message text..." required
                                maxlength="2048" name="text">
-                        <button type="submit" class="btn btn-primary" onclick="/*sendMessage();*/">Send</button>
-                    </form>
+                        <button type="submit" class="btn btn-primary" onclick="sendMessage();">Send</button>
+                    </div>
                 </div>
             </div>
         </div>

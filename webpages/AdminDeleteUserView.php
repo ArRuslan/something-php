@@ -1,35 +1,37 @@
-<?php namespace WebpageClasses;
-use DatabaseClass\Database;
-require "AdminWebpage.php";
-include "Database.php";
-include "config.php";
+<?php
 
-class AdminDeleteUserWebpage extends AdminWebpage {
+namespace IdkChat\Webpages;
+
+use DOMDocument;
+use IdkChat\Database\BaseDatabaseAdapter;
+use IdkChat\Database\Models\UserFactory;
+
+require_once "AdminView.php";
+require_once $GLOBALS["ROOT_DIR"]."/config.php";
+
+include_once $GLOBALS["ROOT_DIR"]."/db/BaseDatabaseAdapter.php";
+include_once $GLOBALS["ROOT_DIR"]."/db/models/User.php";
+include_once $GLOBALS["DB_ADAPTER_PATH"];
+
+class AdminDeleteUserView extends AdminView {
     private string $title = "Delete user";
     private string $header = "<h1>Header</h1>";
     private string $body = "<div class='body'>Body</div>";
-    private string $footer;
-    public Database $db;
+    private string $footer = "";
+    public BaseDatabaseAdapter $db;
 
     public function __construct(?string $title = null, ?string $header = null, ?string $body = null, ?string $footer = null) {
-        global $FOOTER;
-        if ($title != null) $this->title = $title;
-        if ($header != null) $this->header = $header;
-        if ($body != null) $this->body = $body;
-        if ($footer != null)
-            $this->footer = $footer;
-        else
-            $this->footer = $FOOTER;
-
-        $this->db = new Database($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
+        parent::__construct($title, $header, $body, $footer);
+        $this->db = $GLOBALS["DB_ADAPTER_CLASS"]::getInstance();
+        $this->db->connect($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_database"]);
     }
 
-    public function setTitle(string $title): AdminDeleteUserWebpage {
+    public function setTitle(string $title): AdminDeleteUserView {
         $this->title = $title;
         return $this;
     }
 
-    public function setHeader(string $header): AdminDeleteUserWebpage {
+    public function setHeader(string $header): AdminDeleteUserView {
         $this->header = $header;
         return $this;
     }
@@ -38,11 +40,11 @@ class AdminDeleteUserWebpage extends AdminWebpage {
         return (string)$this->fillTable()->saveHTML();
     }
 
-    public function setBody(string $body): AdminDeleteUserWebpage {
+    public function setBody(string $body): AdminDeleteUserView {
         return $this;
     }
 
-    public function setFooter(string $footer): AdminDeleteUserWebpage {
+    public function setFooter(string $footer): AdminDeleteUserView {
         $this->footer = $footer;
         return $this;
     }
@@ -51,12 +53,14 @@ class AdminDeleteUserWebpage extends AdminWebpage {
         return $this->footer;
     }
 
-    private function fillTable(): \DOMDocument {
-        $document = file_get_contents("pages/adminPages/deleteUser.php");
-        $dom = new \DOMDocument();
+    private function fillTable(): DOMDocument {
+        ob_start();
+        include_once $GLOBALS["ROOT_DIR"]."/pages/adminPages/deleteUser.php";
+        $document = ob_get_clean();
+        $dom = new DOMDocument();
         $dom->loadHTML($document);
         $tableBody = $dom->getElementById("table-body");
-        $userArray = $this->db->getAllUsers();
+        $userArray = UserFactory::getAll();
         if ($userArray == null) {
             return $dom;
         }
