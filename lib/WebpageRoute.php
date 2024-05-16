@@ -52,6 +52,7 @@ class WebpageRoute implements BaseRoute {
                         <li><button class=\"bdel\" onclick=\"loadContent('faq')\"><a href=\"#\" class=\"nav-link px-2\">FAQs</a></button></li>
                         <li><button class=\"bdel\" onclick=\"loadContent('about')\"><a href=\"#\" class=\"nav-link px-2\">About</a></button></li>
                         <li><button class=\"bdel\"><a href=\"/admin\" class=\"nav-link px-2\">Admin</a></button></li>
+                        <li><button class=\"bdel\"><a href=\"/settings\" class=\"nav-link px-2\">Settings</a></button></li>
                         </ul>
                         <div class=\"text-end\">
                         <a href=\"/auth\">

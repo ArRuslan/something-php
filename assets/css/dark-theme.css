@@ -10,17 +10,24 @@
 .colorbg{
     background-color: #1c191e;
 }
+a
+{
+    color: #4663ac;
+}
 a:link{
     text-decoration: none;
+    color: #4663ac;
 }
 a:visited{
     text-decoration: none;
+    color: #4663ac;
 }
 a:hover{
     text-decoration: none;
 }
 a:active{
     text-decoration: none;
+    color: #4663ac;
 }
 .bdel {
     background: none;
@@ -30,6 +37,22 @@ a:active{
     font: inherit;
     cursor: pointer;
     outline:inherit;
+}
+
+.bdel #homebutton
+{
+    color: #ffc107;
+}
+#loginButton
+{
+    color: #40599a;
+    border-color: #40599a;
+}
+
+#loginButton:hover
+{
+    transition-duration: 250ms;
+    background-color: #36303a;
 }
 
 #faq h2{
