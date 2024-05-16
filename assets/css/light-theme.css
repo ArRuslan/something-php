@@ -1,0 +1,83 @@
+#wellcome{
+    height:140px !important;
+}
+
+#welcome h1{
+    width: 700px !important;
+    text-wrap: nowrap;
+}
+
+.colorbg{
+    background-color:  	#c8d9ed;
+}
+a
+{
+    color: #4663ac;
+}
+a:link{
+    text-decoration: none;
+    color: #4663ac;
+}
+a:visited{
+    text-decoration: none;
+    color: #4663ac;
+}
+a:hover{
+    text-decoration: none;
+}
+a:active{
+    text-decoration: none;
+    color: #4663ac;
+}
+.bdel {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline:inherit;
+}
+
+.bdel #homebutton
+{
+    color: #3c2454;
+}
+#loginButton
+{
+    color: #236078;
+    border-color: #236078;
+}
+
+#loginButton:hover
+{
+    transition-duration: 250ms;
+    background-color: #dee8f4;
+}
+#faq h2{
+    margin-left: 15;
+}
+
+.faq-block{
+    margin: 20 0 0 15;
+}
+
+.faq-block p{
+    margin: 0;
+    padding: 0;
+}
+.question{
+    font-weight: 600;
+}
+.spanfaq{
+    font-weight: 700;
+    font-style: italic;
+}
+
+.role{
+    font-weight: 600;
+}
+
+#about{
+    margin:20 0 0 15;
+}

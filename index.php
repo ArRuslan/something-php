@@ -1,6 +1,12 @@
 <?php namespace IdkChat;
 
 $GLOBALS["ROOT_DIR"] = dirname(__FILE__);
+if(!isset($GLOBALS["theme"])) //If the theme is not set yet then we set it to light
+{
+    echo "Theme is not set";
+    $GLOBALS["theme"] = "light";
+}
+
 
 use IdkChat\Webpages\HomeView;
 use IdkChat\Webpages\AuthView;
@@ -39,6 +45,9 @@ $router->post("/api/admin/delete-user", new ApiRoute(function() {
 }));
 $router->get("/api/ws-token", new ApiRoute(function() {
     include_once $GLOBALS["ROOT_DIR"]."/scripts/ws-token.php";
+}));
+$router->post("/api/theme/change-theme", new ApiRoute(function(){
+   include_once $GLOBALS["ROOT_DIR"]."/scripts/change_theme.php";
 }));
 
 echo $router->processRequest();

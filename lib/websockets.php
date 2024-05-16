@@ -37,7 +37,7 @@ abstract class WebSocketServer {
 
     function __construct($addr, $port, $bufferLength = 2048) {
         $this->maxBufferSize = $bufferLength;
-        $this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die("Failed: socket_create()");
+        $this->master = \socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die("Failed: socket_create()");
         socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1) or die("Failed: socket_option()");
         socket_bind($this->master, $addr, $port) or die("Failed: socket_bind()");
         socket_listen($this->master, 20) or die("Failed: socket_listen()");
