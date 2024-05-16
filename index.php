@@ -2,8 +2,6 @@
 
 $GLOBALS["ROOT_DIR"] = dirname(__FILE__);
 
-
-
 use IdkChat\Webpages\HomeView;
 use IdkChat\Webpages\AuthView;
 use IdkChat\Webpages\DialogsView;

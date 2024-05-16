@@ -6,7 +6,6 @@ include_once "BaseRoute.php";
 require "ThemeStrategy.php";
 class WebpageRoute implements BaseRoute {
     private string $pageCls;
-    public $themeStrategy;
 
     public function __construct(string $pageCls) {
         $this->pageCls = $pageCls;
@@ -14,12 +13,11 @@ class WebpageRoute implements BaseRoute {
 
     public function response(): string {
         session_start();
-        if(!isset($_SESSION["theme"])) //If the theme is not set yet then we set it to light
-        {
+        if(!isset($_SESSION["theme"])) { // If the theme is not set yet then we set it to light
             $_SESSION["theme"] = "light";
         }
 
-        $this->themeStrategy = isset($_SESSION['theme']) && $_SESSION['theme'] === 'light' ? new \LightThemeStrategy() : new \DarkThemeStrategy();
+        $themeStrategy = isset($_SESSION['theme']) && $_SESSION['theme'] === 'light' ? new LightThemeStrategy() : new DarkThemeStrategy();
         $pageClass = explode("\\", $this->pageCls);
         $pageClass = $pageClass[count($pageClass)-1];
 
@@ -29,7 +27,7 @@ class WebpageRoute implements BaseRoute {
         $title = $page->getTitle();
         $body = $page->getBody();
         $footer = $page->getFooter();
-        $headerStyle = $this->themeStrategy->getTheme();
+        $headerStyle = $themeStrategy->getTheme();
         return "
             <html lang=\"en\">
             <head>

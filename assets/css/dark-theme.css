@@ -1,34 +1,44 @@
-#wellcome{
-    height:140px !important;
+#wellcome {
+    height: 140px !important;
 }
 
-#welcome h1{
+#welcome h1 {
     width: 700px !important;
     text-wrap: nowrap;
 }
 
-.colorbg{
+.colorbg {
     background-color: #1c191e;
 }
-a
-{
+
+body {
+    background-color: #28282c;
+    color: white;
+}
+
+a {
     color: #4663ac;
 }
-a:link{
+
+a:link {
     text-decoration: none;
     color: #4663ac;
 }
-a:visited{
+
+a:visited {
     text-decoration: none;
     color: #4663ac;
 }
-a:hover{
+
+a:hover {
     text-decoration: none;
 }
-a:active{
+
+a:active {
     text-decoration: none;
     color: #4663ac;
 }
+
 .bdel {
     background: none;
     color: inherit;
@@ -36,49 +46,53 @@ a:active{
     padding: 0;
     font: inherit;
     cursor: pointer;
-    outline:inherit;
+    outline: inherit;
 }
 
-.bdel #homebutton
-{
+.bdel #homebutton {
     color: #ffc107;
 }
-#loginButton
-{
+
+#loginButton {
     color: #40599a;
     border-color: #40599a;
 }
 
-#loginButton:hover
-{
+#loginButton:hover {
     transition-duration: 250ms;
     background-color: #36303a;
 }
 
-#faq h2{
-    margin-left: 15;
+#faq h2 {
+    margin-left: 15px;
 }
 
-.faq-block{
-    margin: 20 0 0 15;
+.faq-block {
+    margin: 20px 0 0 15px;
 }
 
-.faq-block p{
+.faq-block p {
     margin: 0;
     padding: 0;
 }
-.question{
+
+.question {
     font-weight: 600;
 }
-.spanfaq{
+
+.spanfaq {
     font-weight: 700;
     font-style: italic;
 }
 
-.role{
+.role {
     font-weight: 600;
 }
 
-#about{
-    margin:20 0 0 15;
+#about {
+    margin: 20px 0 0 15px;
+}
+
+.auth-form, .auth-form:hover, .content-auth {
+    background-color: #1c191e;
 }

@@ -33,7 +33,7 @@ class SettingsView implements BaseView {
 
     public function getBody(): string {
         ob_start();
-        include_once("pages/settingsPages/settings.html");
+        include_once("pages/settings/body.php");
         return ob_get_clean();
     }
 
@@ -50,4 +50,3 @@ class SettingsView implements BaseView {
         return $this;
     }
 }
-?>
