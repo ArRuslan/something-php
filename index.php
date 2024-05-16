@@ -1,11 +1,7 @@
 <?php namespace IdkChat;
 
 $GLOBALS["ROOT_DIR"] = dirname(__FILE__);
-if(!isset($GLOBALS["theme"])) //If the theme is not set yet then we set it to light
-{
-    echo "Theme is not set";
-    $GLOBALS["theme"] = "light";
-}
+
 
 
 use IdkChat\Webpages\HomeView;
@@ -17,6 +13,7 @@ use IdkChat\Webpages\AdminBroadcastView;
 use IdkChat\Lib\WebpageRoute;
 use IdkChat\Lib\ApiRoute;
 use IdkChat\Lib\Router;
+use IdkChat\Webpages\SettingsView;
 
 include_once "lib/WebpageRoute.php";
 include_once "lib/ApiRoute.php";
@@ -30,6 +27,7 @@ $router->get("/dialogs", new WebpageRoute(DialogsView::class));
 $router->get("/admin", new WebpageRoute(AdminView::class));
 $router->get("/admin/delete-user", new WebpageRoute(AdminDeleteUserView::class));
 $router->get("/admin/broadcast", new WebpageRoute(AdminBroadcastView::class));
+$router->get("/settings", new WebpageRoute(SettingsView::class));
 
 $router->post("/api/auth/login", new ApiRoute(function() {
     include_once $GLOBALS["ROOT_DIR"]."/scripts/login.php";

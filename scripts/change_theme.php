@@ -1,13 +1,18 @@
 <?php
         if($_SERVER["REQUEST_METHOD"] == "POST")
         {
-            if($GLOBALS['theme'] === 'dark')
+            if($_SESSION['theme'] === 'dark')
             {
-                $GLOBALS['theme'] = 'light';
+                echo "set bright";
+                $_SESSION['theme'] = 'light';
             }
             else
             {
-                $GLOBALS['theme'] = 'dark';
+                echo "set dark";
+                $_SESSION['theme'] = 'dark';
             }
         }
+        $str = $_SESSION['currentPage'];
+        echo $str;
+        header('Location:' ."/settings");
 ?>

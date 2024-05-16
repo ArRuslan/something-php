@@ -14,17 +14,18 @@ class WebpageRoute implements BaseRoute {
 
     public function response(): string {
         session_start();
+        if(!isset($_SESSION["theme"])) //If the theme is not set yet then we set it to light
+        {
+            $_SESSION["theme"] = "light";
+        }
 
-
-        $this->themeStrategy = isset($_SESSION['theme']) && $_SESSION['theme'] === 'dark' ? new \DarkThemeStrategy() : new \LightThemeStrategy();
-
+        $this->themeStrategy = isset($_SESSION['theme']) && $_SESSION['theme'] === 'light' ? new \LightThemeStrategy() : new \DarkThemeStrategy();
         $pageClass = explode("\\", $this->pageCls);
         $pageClass = $pageClass[count($pageClass)-1];
 
         include_once dirname(__FILE__) . "/../webpages/" . $pageClass . ".php";
 
         $page = new ("IdkChat\\Webpages\\".$pageClass)();
-        $str = $GLOBALS['theme'];
         $title = $page->getTitle();
         $body = $page->getBody();
         $footer = $page->getFooter();
@@ -39,13 +40,9 @@ class WebpageRoute implements BaseRoute {
                 <link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\"/>
             </head>
             <body>
-            $str
                 <header class=\"p-3 colorbg text-white\">
                     <div class=\"container\">
                     <div class=\"d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start\">
-                    <form method=\"post\" action=\"/api/theme/change-theme\">
-                        <button type=\"submit\" name=\"change_session\">Theme switcher</button>
-                    </form>
                         <a href=\"/\" class=\"d-flex align-items-center mb-2 mb-lg-0 text-decoration-none\">
                         <svg class=\"bi me-2\" width=\"40\" height=\"32\" role=\"img\" aria-label=\"Bootstrap\"><use xlink:href=\"#bootstrap\"></use></svg>
                         </a>

@@ -25,6 +25,6 @@ class DarkThemeStrategy implements ThemeStrategy
     }
     public function getTheme() : string
     {
-        return '<link rel="stylesheet" type="text/css" href="dark-theme.css">';
+        return "<link rel=\"stylesheet\" href=\"/assets/css/dark-theme.css\"/>";
     }
 }
